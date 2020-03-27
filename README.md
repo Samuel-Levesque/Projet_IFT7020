@@ -28,6 +28,7 @@ Les contraintes obligatoires que nos horaires générés doivent respecter sont 
 
 + Préférences de date/heures de chaque équipe (équipe 1 préfère jouer après 16h, pas le 24, etc...).
 + Restrictions de lieux (maximum x parties pour y date à z venue/l court).
++ Tables de contraintes avec poids.
 + Les équipes ayant le même coach ne jouent pas en même temps (aucun coach ne doit être découpé).
 + Une équipe ne joue pas deux parties de suite.
 + Toutes les équipes de chaque division ont le même nombre maximal de parties par jour.
