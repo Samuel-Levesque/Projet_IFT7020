@@ -119,8 +119,10 @@ class ConstraintsGenerator:
             Constraint Type: Before/After. If before, the team prefers NOT to play before
                 specified time. If after, the team preferes NOT to play after specified time
             Constraint Time: Time threshold used to define the constraint.
+            Weight: Importance of constraint
         """
-        time_restrictions = pandas.DataFrame(columns=["Team", "Date", "Constraint Type", "Constraint Time"])
+        time_restrictions = pandas.DataFrame(columns=[
+                "Team", "Date", "Constraint Type", "Constraint Time", "Weight"])
         teams = self.teams["Team Name"].unique().tolist()
         dates = self.court_availabilities["Date"].unique().tolist()
 #        dates = [datetime.datetime.strptime(date, "%Y-%m-%d") for date in dates]
@@ -132,6 +134,7 @@ class ConstraintsGenerator:
             lookup_key = (chosen_team, chosen_date)
             earliest_time = chosen_date.replace(hour=8, minute=0)
             latest_time = chosen_date.replace(hour=23, minute=0)
+            weight = random.choice(range(1, 11))
             # Look if constraint was already applied on this team/date
             if lookup_key in applied_constraints:
                 previous_constraints = applied_constraints[(chosen_team, chosen_date)]
@@ -167,6 +170,7 @@ class ConstraintsGenerator:
             time_restrictions.loc[n_applied_constraints, "Date"] = chosen_date
             time_restrictions.loc[n_applied_constraints, "Constraint Type"] = constraint_type
             time_restrictions.loc[n_applied_constraints, "Constraint Time"] = constraint_time
+            time_restrictions.loc[n_applied_constraints, "Weight"] = weight
 
             # Updating applied_constraints dict
             if lookup_key in applied_constraints:
@@ -179,7 +183,43 @@ class ConstraintsGenerator:
         return time_restrictions
 
     def _generate_venue_restrictions(self, n_restrictions):
-        pass
+        """
+        Generates venue constraints table with the following significations.
+        All constraints signify: Team X must not play more than Y games at Z date
+            Team: Team affected by constraint
+            Date: Date used for the constraint
+            Maximum number of games: Max games a team can play during the day
+            Weight: Importance of this constraint
+        """
+        venue_restrictions = pandas.DataFrame(columns=[
+                "Team", "Date", "Maximum Number of Games", "Weight"])
+        teams_indices = self.teams.index
+        dates = self.court_availabilities["Date"].unique().tolist()
+        applied_restrictions = []
+        n_applied_restrictions = 0
+        while n_applied_restrictions < n_restrictions:
+            team_index = random.choice(teams_indices)
+            chosen_team = self.teams.loc[team_index, "Team Name"]
+            division = self.teams.loc[team_index, "Division Name"]
+            chosen_date = random.choice(dates)
+            lookup_key = (chosen_team, chosen_date)
+            if lookup_key in applied_restrictions:
+                continue
+            weight = random.choice(range(1, 11))
+
+            n_teams_in_division = len(self.teams[self.teams["Division Name"] == division])
+            n_games = n_teams_in_division * (n_teams_in_division - 1)/2
+            constraint_n_games = random.randint(1, n_games)
+
+            venue_restrictions.loc[n_applied_restrictions, "Team"] = chosen_team
+            venue_restrictions.loc[n_applied_restrictions, "Date"] = chosen_date
+            venue_restrictions.loc[n_applied_restrictions, "Maximum Number of Games"] = constraint_n_games
+            venue_restrictions.loc[n_applied_restrictions, "Weight"] = weight
+
+            applied_restrictions.append(lookup_key)
+            n_applied_restrictions += 1
+        return venue_restrictions
+
 
 def random_between_two_times(time_start, time_end, rounding_method="floor"):
     time_diff = time_end - time_start
@@ -205,7 +245,7 @@ if __name__ == "__main__":
     venue_n_courts = [1, 2]
     date_start = datetime.datetime(2020, 3, 25)
     n_time_constraints = 10
-    n_venue_constraints = 5
+    n_venue_constraints = 10
 
     constraints_generator = ConstraintsGenerator(seed)
 
@@ -214,7 +254,8 @@ if __name__ == "__main__":
                           venue_n_courts, date_start,
                           n_time_constraints, n_venue_constraints)
 
-    print(constraints_generator.court_availabilities)
+#    print(constraints_generator.court_availabilities)
     print(constraints_generator.teams_time_restrictions)
+#    print(constraints_generator.teams_venue_restrictions)
 
 
