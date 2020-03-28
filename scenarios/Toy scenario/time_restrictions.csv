@@ -1,0 +1,4 @@
+Team,Date,Constraint Type,Constraint Time,Weight
+Div0 Team 0,2020-03-25,after,14h10,9
+Div0 Team 0,2020-03-25,before,17h10,3
+Div2 Team 2,2020-03-25,before,07h55,4

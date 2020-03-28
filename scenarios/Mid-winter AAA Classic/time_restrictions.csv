@@ -1,0 +1,11 @@
+Team,Date,Constraint Type,Constraint Time,Weight
+Div3 Team 1,2020-03-25,after,20h10,3
+Div2 Team 1,2020-03-25,after,17h45,1
+Div2 Team 5,2020-03-26,after,14h40,5
+Div1 Team 0,2020-03-29,before,19h20,6
+Div1 Team 2,2020-03-29,after,09h05,7
+Div1 Team 0,2020-03-28,after,16h10,1
+Div3 Team 3,2020-03-27,before,10h45,7
+Div3 Team 8,2020-03-27,before,14h10,9
+Div3 Team 7,2020-03-25,after,12h05,9
+Div4 Team 0,2020-03-27,after,17h10,2

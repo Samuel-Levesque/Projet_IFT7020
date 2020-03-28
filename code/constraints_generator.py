@@ -297,60 +297,58 @@ if __name__ == "__main__":
             "scenario_name": "2019 World Selects Invitational",
             "seed": 123,
             "game_length": 60,
-            "divisions_size": [3, 3, 3],
-            "n_shared_coaches": 1,
-            "venue_n_courts": [1],
+            "divisions_size": [8, 40],
+            "n_shared_coaches": 6,
+            "venue_n_courts": [1, 1, 2, 2],
             "date_start": datetime.datetime(2020, 3, 25),
-            "n_time_restrictions": 18,
-            "n_venue_restrictions": 9
+            "n_time_restrictions": 30,
+            "n_venue_restrictions": 6
+        },
+        {
+            "scenario_name": "2019 Motown Classic",
+            "seed": 123,
+            "game_length": 60,
+            "divisions_size": [42, 48, 62, 60, 40, 32, 29, 23, 18],
+            "n_shared_coaches": 40,
+            "venue_n_courts": [1, 2, 5, 2, 3, 2, 3, 3, 2, 2, 2, 1, 3, 1, 2, 2, 4, 1],
+            "date_start": datetime.datetime(2020, 3, 25),
+            "n_time_restrictions": 200,
+            "n_venue_restrictions": 40
+        },
+        {
+            "scenario_name": "Mid-winter AAA Classic",
+            "seed": 123,
+            "game_length": 60,
+            "divisions_size": [8, 6, 11, 11, 6],
+            "n_shared_coaches": 10,
+            "venue_n_courts": [3, 1, 2, 1],
+            "date_start": datetime.datetime(2020, 3, 25),
+            "n_time_restrictions": 10,
+            "n_venue_restrictions": 5
 
         },
         {
-            "scenario_name": "Impossible toy",
+            "scenario_name": "SAHOF State Championships",
             "seed": 123,
             "game_length": 60,
-            "divisions_size": [3, 3, 3],
-            "n_shared_coaches": 1,
-            "venue_n_courts": [1],
+            "divisions_size": [6, 4, 8, 6, 6, 10, 4, 8, 6, 6, 4],
+            "n_shared_coaches": 5,
+            "venue_n_courts": [3, 3, 2],
             "date_start": datetime.datetime(2020, 3, 25),
-            "n_time_restrictions": 18,
-            "n_venue_restrictions": 9
+            "n_time_restrictions": 10,
+            "n_venue_restrictions": 4
 
         },
         {
-            "scenario_name": "Impossible toy",
+            "scenario_name": "The 2020 Kennedy Memorial",
             "seed": 123,
             "game_length": 60,
-            "divisions_size": [3, 3, 3],
-            "n_shared_coaches": 1,
-            "venue_n_courts": [1],
+            "divisions_size": [26, 42, 44, 30, 32, 30, 5],
+            "n_shared_coaches": 30,
+            "venue_n_courts": [1, 2, 1, 3, 2, 2, 1, 2, 1, 2, 1, 1, 2, 1],
             "date_start": datetime.datetime(2020, 3, 25),
-            "n_time_restrictions": 18,
-            "n_venue_restrictions": 9
-
-        },
-        {
-            "scenario_name": "Impossible toy",
-            "seed": 123,
-            "game_length": 60,
-            "divisions_size": [3, 3, 3],
-            "n_shared_coaches": 1,
-            "venue_n_courts": [1],
-            "date_start": datetime.datetime(2020, 3, 25),
-            "n_time_restrictions": 18,
-            "n_venue_restrictions": 9
-
-        },
-        {
-            "scenario_name": "Impossible toy",
-            "seed": 123,
-            "game_length": 60,
-            "divisions_size": [3, 3, 3],
-            "n_shared_coaches": 1,
-            "venue_n_courts": [1],
-            "date_start": datetime.datetime(2020, 3, 25),
-            "n_time_restrictions": 18,
-            "n_venue_restrictions": 9
+            "n_time_restrictions": 30,
+            "n_venue_restrictions": 10
 
         }
     ]
