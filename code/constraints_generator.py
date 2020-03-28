@@ -142,13 +142,13 @@ class ConstraintsGenerator:
                     # No more than 2 constraints per team/date
                     continue
                 if previous_constraints[0][0] == "before":
-                    constraint_type = ["after"]
+                    constraint_type = "after"
                     constraint_time = random_between_two_times(
                             earliest_time,
                             previous_constraints[0][1],
                             rounding_method="ceiling")
                 elif previous_constraints[0][0] == "after":
-                    constraint_type = ["before"]
+                    constraint_type = "before"
                     constraint_time = random_between_two_times(
                             previous_constraints[0][1],
                             latest_time,
@@ -220,6 +220,33 @@ class ConstraintsGenerator:
             n_applied_restrictions += 1
         return venue_restrictions
 
+    def export_scenario_tables(self, scenario_name):
+        self.teams.to_csv(f"scenarios/{scenario_name}/teams.csv", index=False)
+        self._format_export_court_availabilities(scenario_name)
+        self._format_export_teams_time_restrictions(scenario_name)
+        self._format_export_teams_venue_restrictions(scenario_name)
+
+    def _format_export_court_availabilities(self, scenario_name):
+        court_availabilities = self.court_availabilities
+        for index, row in court_availabilities.iterrows():
+            court_availabilities.loc[index, "Date"] = row["Date"].strftime("%Y-%m-%d")
+            court_availabilities.loc[index, "Time Start"] = row["Time Start"].strftime("%Hh%M")
+            court_availabilities.loc[index, "Time End"] = row["Time End"].strftime("%Hh%M")
+        court_availabilities.to_csv(f"scenarios/{scenario_name}/court_availabilities.csv", index=False)
+
+    def _format_export_teams_time_restrictions(self, scenario_name):
+        time_restrictions = self.teams_time_restrictions
+        for index, row in time_restrictions.iterrows():
+            time_restrictions.loc[index, "Date"] = row["Date"].strftime("%Y-%m-%d")
+            time_restrictions.loc[index, "Constraint Time"] = row["Constraint Time"].strftime("%Hh%M")
+        time_restrictions.to_csv(f"scenarios/{scenario_name}/time_restrictions.csv", index=False)
+
+    def _format_export_teams_venue_restrictions(self, scenario_name):
+        venue_restrictions = self.teams_venue_restrictions
+        for index, row in venue_restrictions.iterrows():
+            venue_restrictions.loc[index, "Date"] = row["Date"].strftime("%Y-%m-%d")
+        venue_restrictions.to_csv(f"scenarios/{scenario_name}/venue_restrictions.csv", index=False)
+
 
 def random_between_two_times(time_start, time_end, rounding_method="floor"):
     time_diff = time_end - time_start
@@ -238,24 +265,105 @@ def random_between_two_times(time_start, time_end, rounding_method="floor"):
 
 
 if __name__ == "__main__":
-    seed = 123
-    game_length = 60  # minutes
-    teams_per_division = [6, 6, 6, 6]
-    shared_coaches = 3
-    venue_n_courts = [1, 2]
-    date_start = datetime.datetime(2020, 3, 25)
-    n_time_constraints = 10
-    n_venue_constraints = 10
+    import os
+    os.chdir('/Users/Samuel_Levesque/Documents/GitHub/Projet_IFT7020')
 
-    constraints_generator = ConstraintsGenerator(seed)
+    scenarios = [
+        {
+            "scenario_name": "Toy scenario",
+            "seed": 123,
+            "game_length": 60,
+            "divisions_size": [3, 3, 3],
+            "n_shared_coaches": 1,
+            "venue_n_courts": [1],
+            "date_start": datetime.datetime(2020, 3, 25),
+            "n_time_restrictions": 3,
+            "n_venue_restrictions": 3
 
-    constraints_generator.generate_scenario(teams_per_division,
-                          shared_coaches, game_length,
-                          venue_n_courts, date_start,
-                          n_time_constraints, n_venue_constraints)
+        },
+        {
+            "scenario_name": "Impossible toy",
+            "seed": 123,
+            "game_length": 60,
+            "divisions_size": [3, 3, 3],
+            "n_shared_coaches": 1,
+            "venue_n_courts": [1],
+            "date_start": datetime.datetime(2020, 3, 25),
+            "n_time_restrictions": 18,
+            "n_venue_restrictions": 9
 
-#    print(constraints_generator.court_availabilities)
-    print(constraints_generator.teams_time_restrictions)
-#    print(constraints_generator.teams_venue_restrictions)
+        },
+        {
+            "scenario_name": "2019 World Selects Invitational",
+            "seed": 123,
+            "game_length": 60,
+            "divisions_size": [3, 3, 3],
+            "n_shared_coaches": 1,
+            "venue_n_courts": [1],
+            "date_start": datetime.datetime(2020, 3, 25),
+            "n_time_restrictions": 18,
+            "n_venue_restrictions": 9
 
+        },
+        {
+            "scenario_name": "Impossible toy",
+            "seed": 123,
+            "game_length": 60,
+            "divisions_size": [3, 3, 3],
+            "n_shared_coaches": 1,
+            "venue_n_courts": [1],
+            "date_start": datetime.datetime(2020, 3, 25),
+            "n_time_restrictions": 18,
+            "n_venue_restrictions": 9
+
+        },
+        {
+            "scenario_name": "Impossible toy",
+            "seed": 123,
+            "game_length": 60,
+            "divisions_size": [3, 3, 3],
+            "n_shared_coaches": 1,
+            "venue_n_courts": [1],
+            "date_start": datetime.datetime(2020, 3, 25),
+            "n_time_restrictions": 18,
+            "n_venue_restrictions": 9
+
+        },
+        {
+            "scenario_name": "Impossible toy",
+            "seed": 123,
+            "game_length": 60,
+            "divisions_size": [3, 3, 3],
+            "n_shared_coaches": 1,
+            "venue_n_courts": [1],
+            "date_start": datetime.datetime(2020, 3, 25),
+            "n_time_restrictions": 18,
+            "n_venue_restrictions": 9
+
+        },
+        {
+            "scenario_name": "Impossible toy",
+            "seed": 123,
+            "game_length": 60,
+            "divisions_size": [3, 3, 3],
+            "n_shared_coaches": 1,
+            "venue_n_courts": [1],
+            "date_start": datetime.datetime(2020, 3, 25),
+            "n_time_restrictions": 18,
+            "n_venue_restrictions": 9
+
+        }
+    ]
+
+    for scenario in scenarios:
+        constraints_generator = ConstraintsGenerator(scenario["seed"])
+        constraints_generator.generate_scenario(
+                divisions_size=scenario["divisions_size"],
+                n_shared_coaches=scenario["n_shared_coaches"],
+                game_length=scenario["game_length"],
+                venue_n_courts=scenario["venue_n_courts"],
+                date_start=scenario["date_start"],
+                n_time_restrictions=scenario["n_time_restrictions"],
+                n_venue_restrictions=scenario["n_venue_restrictions"])
+        constraints_generator.export_scenario_tables(scenario["scenario_name"])
 
