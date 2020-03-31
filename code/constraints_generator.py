@@ -8,6 +8,7 @@ Created on Wed Mar 25 19:18:11 2020
 import datetime
 import random
 import pandas
+import json
 
 class ConstraintsGenerator:
     """ Class that generates random fictive scenarios for sports tournaments. """
