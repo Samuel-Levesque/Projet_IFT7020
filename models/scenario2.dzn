@@ -1,0 +1,15 @@
+n = 4;
+num_courts = 3;
+game_duration = 60;
+
+division = [1, 2, 3, 4, 5]
+coaches = [1, 2, 3, 4, 5, 6]
+
+nb_venues = 5;
+nb_periodes = 4;
+
+disp = [|0,0,0,0 
+  |0,0,0,0
+  |0,0,0,0
+  |0,0,0,0
+  |0,0,0,0|];
