@@ -1,29 +1,26 @@
 include "globals.mzn"; 
 include "scenario1.dzn";
 
-set of int: teams = 1..n;
 
-int: n; % number of players
-int: num_courts; % number of courts
+set of int: games = 1..NB_GAMES;
+set of int: venues = 1..NB_VENUES;
+set of int: periods = 1..NB_PERIODS;
 
-array[venues, periode] of int: disp;
+array[venues, periods] of int: VENUE_AVAILABILITIES;
 
-int: m = n*(n-1) div 2; % number of matches
 
 % decision variables
-array[1..n, 1..n] of var 0..m: x;
+array[games, venues] of var bool: places;
+array[games, periods] of var bool: schedule;
 
-var 0..m: z = max(array1d(x)); % max number of match (to minimize)
 
-% predicates
-
-% solve minimize z;
-solve :: int_search(array1d(x), most_constrained, indomain_split, complete) minimize z;
 
 constraint
 
-
-  % upper triangle
+  forall(i in games, j in venues)(
+    places[i, j] <-> x1[j, i] = 0);
+ 
+   % upper triangle
   forall(k in 1..n) (
     % sum([x[i,j]=k | i,j in 1..n where i < j]) <= num_courts
     % at_most(num_courts, [x[i,j]=k | i,j in 1..n where i < j], k)
@@ -51,6 +48,9 @@ constraint
 
   /\ x[1,2] = 1
 ;
+
+% solve minimize z;
+solve :: int_search(schedule, most_constrained, indomain_split, complete) satisfy;
 
 output 
 [
