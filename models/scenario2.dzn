@@ -1,15 +1,20 @@
-n = 4;
-num_courts = 3;
-game_duration = 60;
+NB_PERIODS = 4;
+NB_VENUES = 3;
+GAME_DURATION = 60;
+NB_GAMES = 6; % 3*(3-1)/2 + 3*(3-1)/2
+NB_TEAMS = 3;
+NB_DIVISIONS = 2;
 
-division = [1, 2, 3, 4, 5]
-coaches = [1, 2, 3, 4, 5, 6]
+NB_TEAMS_PER_DIVISION = [3, 3];
+% coaches = [1, 2, 3, 4, 5, 6]
 
-nb_venues = 5;
-nb_periodes = 4;
+VENUE_AVAILABILITIES = [|true,true,false,false 
+  |false,false,true,true
+  |true,false,false,true|];
 
-disp = [|0,0,0,0 
-  |0,0,0,0
-  |0,0,0,0
-  |0,0,0,0
-  |0,0,0,0|];
+GAMES_TO_SCHEDULE = [|"Div_1_Team_1", "Div_1_Team_2"
+  |"Div_1_Team_1", "Div_1_Team_3"
+  |"Div_1_Team_2", "Div_1_Team_3"
+  |"Div_2_Team_1", "Div_2_Team_2"
+  |"Div_2_Team_1", "Div_2_Team_3"
+  |"Div_2_Team_2", "Div_2_Team_3"|];
