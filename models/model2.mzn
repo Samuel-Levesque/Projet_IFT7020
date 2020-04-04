@@ -27,9 +27,8 @@ constraint
     not VENUE_AVAILABILITIES[v, p] -> schedule[v, p] = 0
   );
 
-
 constraint  
-  among(array1d(schedule), games) = 6;
+  among(array1d(schedule), games) = NB_GAMES;
  
  constraint  
   alldifferent_except_0(schedule);
