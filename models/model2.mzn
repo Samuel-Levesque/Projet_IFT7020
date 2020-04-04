@@ -7,7 +7,7 @@ int: GAME_DURATION;
 int: NB_GAMES;
 int: NB_TEAMS;
 int: NB_DIVISIONS;
-enum TEAM_NAMES_ENUM;
+enum TEAM_NAMES;
 
 set of int: games = 1..NB_GAMES;
 set of int: venues = 1..NB_VENUES;
@@ -17,12 +17,11 @@ set of int: teams = 1..NB_TEAMS;
 
 array[divisions] of int: NB_TEAMS_PER_DIVISION;
 array[venues, periods] of bool: VENUE_AVAILABILITIES;
-array[games, 1..2] of TEAM_NAMES_ENUM: GAMES_TO_SCHEDULE;
-array[teams] of string: TEAM_NAMES;
+array[games, 1..2] of TEAM_NAMES: GAMES_TO_SCHEDULE;
 
 % decision variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
-array[TEAM_NAMES_ENUM, periods] of var bool: team_playing;
+array[TEAM_NAMES, venues, periods] of var bool: team_playing;
 
 
 % constraints
@@ -38,16 +37,14 @@ constraint
   alldifferent_except_0(schedule);
   
 constraint 
-  forall(v in venues, p in periods) (    
-      team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 1], p] = (schedule[v,p] > 0)	 /\
-      team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 2], p] = (schedule[v,p] > 0)	 /\
-      (schedule[v,p] = 0) <-> not team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 1], p]  /\
-      (schedule[v,p] = 0) <-> not team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 2], p] 
+  forall (t in TEAM_NAMES, v in venues, p in periods) (
+    team_playing[t, v, p] <-> (schedule[v, p] > 0) /\ (GAMES_TO_SCHEDULE[schedule[v, p], 1] = t \/ GAMES_TO_SCHEDULE[schedule[v, p], 2] = t)
   );
+  
 
-constraint
-  forall(t in TEAM_NAMES_ENUM) (
-    count(team_playing[t, periods], 1) = 2
+% Making sure a team does not play two games at the same time
+constraint forall(t in TEAM_NAMES, p in periods) (
+  sum(team_playing[t, venues, p]) <= 1
   );
  
 % solve
@@ -61,10 +58,10 @@ output
 [
   join(" ", [show(schedule[v, p]) | p in periods]) ++ "\n" | v in venues
 ]
-++
-[
-  join(" ", [show(team_playing[t, p]) | p in periods]) ++ "\n" | t in TEAM_NAMES_ENUM
-]
+% ++
+% [
+%   join(" ", [show(team_playing[t, p]) | p in periods]) ++ "\n" | t in TEAM_NAMES
+% ]
 ++
 [
     show(GAMES_TO_SCHEDULE[1, 1])
