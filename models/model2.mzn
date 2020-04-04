@@ -40,7 +40,8 @@ constraint
 constraint 
   forall(v in venues, p in periods) (    
       team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 1], p] = (schedule[v,p] > 0)	 /\
-      team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 2], p] = (schedule[v,p] > 0)	       
+      team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 2], p] = (schedule[v,p] > 0)	 /\ 
+         
   );
   
  
