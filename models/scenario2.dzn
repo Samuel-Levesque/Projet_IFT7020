@@ -12,11 +12,13 @@ VENUE_AVAILABILITIES = [|true,true,false,false
   |false,false,true,true
   |true,false,false,true|];
 
-GAMES_TO_SCHEDULE = [|"Div_1_Team_1", "Div_1_Team_2"
-  |"Div_1_Team_1", "Div_1_Team_3"
-  |"Div_1_Team_2", "Div_1_Team_3"
-  |"Div_2_Team_1", "Div_2_Team_2"
-  |"Div_2_Team_1", "Div_2_Team_3"
-  |"Div_2_Team_2", "Div_2_Team_3"|];
+GAMES_TO_SCHEDULE = [|Div_1_Team_1, Div_1_Team_2
+  |Div_1_Team_1, Div_1_Team_3
+  |Div_1_Team_2, Div_1_Team_3
+  |Div_2_Team_1, Div_2_Team_2
+  |Div_2_Team_1, Div_2_Team_3
+  |Div_2_Team_2, Div_2_Team_3|];
   
-  TEAM_NAMES = ["Div_1_Team_1", "Div_1_Team_2", "Div_2_Team_3", "Div_2_Team_1", "Div_2_Team_2", "Div_2_Team_3"]
+TEAM_NAMES = ["Div_1_Team_1", "Div_1_Team_2", "Div_2_Team_3", "Div_2_Team_1", "Div_2_Team_2", "Div_2_Team_3"];
+  
+TEAM_NAMES_ENUM = {Div_1_Team_1, Div_1_Team_2, Div_1_Team_3, Div_2_Team_1, Div_2_Team_2, Div_2_Team_3};
