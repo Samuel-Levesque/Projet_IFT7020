@@ -27,15 +27,12 @@ constraint
     not VENUE_AVAILABILITIES[v, p] -> schedule[v, p] = 0
   );
 
-constraint
-  forall(v in venues, p in periods) (
-    if schedule[v, p] > 0 then
-      scheduled_games[schedule[v, p]] = schedule[v, p]
-    endif
-  );
 
-constraint
-  alldifferent(scheduled_games);
+constraint  
+  among(array1d(schedule), games) = 6;
+ 
+ constraint  
+  alldifferent_except_0(schedule);
   
  
 % solve
@@ -49,8 +46,8 @@ output
 [
   join(" ", [show(schedule[v, p]) | p in periods]) ++ "\n" | v in venues
 ]
-++
-[
-  "Scheduled:" ++ show(scheduled_games)
-]
+% ++
+% [
+%   "Scheduled:" ++ show(scheduled_games)
+% ]
 ;
