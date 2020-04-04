@@ -23,13 +23,13 @@ array[venues, periods] of var 1..NB_GAMES: schedule;
 
 constraint
 
-  forall(i in venues, j in periods) (
-    schedule[i, j] > 0 <-> VENUE_AVAILABILITIES[i, j]
+  forall(v in venues, p in periods) (
+    schedule[v, p] > 0 <-> VENUE_AVAILABILITIES[v, p]
   );
  
  
-% solve minimize z;
-solve :: int_search(schedule, most_constrained, indomain_split, complete) satisfy;
+% solve
+solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
 
 output 
 [
