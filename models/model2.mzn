@@ -19,20 +19,38 @@ array[1..NB_GAMES, 1..2] of string: GAMES_TO_SCHEDULE;
 
 % decision variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
+array[games] of var 1..NB_GAMES: scheduled_games;
 
 
 constraint
-
   forall(v in venues, p in periods) (
     not VENUE_AVAILABILITIES[v, p] -> schedule[v, p] = 0
   );
- 
+
+constraint
+  forall(v in venues, p in periods) (
+    if schedule[v, p] > 0 then
+      scheduled_games[schedule[v, p]] = schedule[v, p]
+    endif
+  );
+
+constraint
+  alldifferent(scheduled_games);
+  
  
 % solve
 solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
 
 output 
 [
-  show(schedule)
+  "Schedule: \n"
+]
+++
+[
+  join(" ", [show(schedule[v, p]) | p in periods]) ++ "\n" | v in venues
+]
+++
+[
+  "Scheduled:" ++ show(scheduled_games)
 ]
 ;
