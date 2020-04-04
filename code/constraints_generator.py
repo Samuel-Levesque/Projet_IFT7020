@@ -9,6 +9,11 @@ import datetime
 import random
 import pandas
 import json
+import os
+
+def _create_dir(outdir):
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
 
 class ConstraintsGenerator:
     """ Class that generates random fictive scenarios for sports tournaments. """
@@ -222,6 +227,7 @@ class ConstraintsGenerator:
         return venue_restrictions
 
     def export_scenario_tables(self, scenario_name):
+        _create_dir(f"scenarios/{scenario_name}")
         self.teams.to_csv(f"scenarios/{scenario_name}/teams.csv", index=False)
         self._format_export_court_availabilities(scenario_name)
         self._format_export_teams_time_restrictions(scenario_name)
@@ -233,6 +239,7 @@ class ConstraintsGenerator:
             court_availabilities.loc[index, "Date"] = row["Date"].strftime("%Y-%m-%d")
             court_availabilities.loc[index, "Time Start"] = row["Time Start"].strftime("%Hh%M")
             court_availabilities.loc[index, "Time End"] = row["Time End"].strftime("%Hh%M")
+        _create_dir(f"scenarios/{scenario_name}")
         court_availabilities.to_csv(f"scenarios/{scenario_name}/court_availabilities.csv", index=False)
 
     def _format_export_teams_time_restrictions(self, scenario_name):
@@ -240,12 +247,14 @@ class ConstraintsGenerator:
         for index, row in time_restrictions.iterrows():
             time_restrictions.loc[index, "Date"] = row["Date"].strftime("%Y-%m-%d")
             time_restrictions.loc[index, "Constraint Time"] = row["Constraint Time"].strftime("%Hh%M")
+        _create_dir(f"scenarios/{scenario_name}")
         time_restrictions.to_csv(f"scenarios/{scenario_name}/time_restrictions.csv", index=False)
 
     def _format_export_teams_venue_restrictions(self, scenario_name):
         venue_restrictions = self.teams_venue_restrictions
         for index, row in venue_restrictions.iterrows():
             venue_restrictions.loc[index, "Date"] = row["Date"].strftime("%Y-%m-%d")
+        _create_dir(f"scenarios/{scenario_name}")
         venue_restrictions.to_csv(f"scenarios/{scenario_name}/venue_restrictions.csv", index=False)
 
 
@@ -267,7 +276,7 @@ def random_between_two_times(time_start, time_end, rounding_method="floor"):
 
 if __name__ == "__main__":
     import os
-    os.chdir('/Users/Samuel_Levesque/Documents/GitHub/Projet_IFT7020')
+    #os.chdir('/Users/Samuel_Levesque/Documents/GitHub/Projet_IFT7020')
 
     scenarios = [
         {
