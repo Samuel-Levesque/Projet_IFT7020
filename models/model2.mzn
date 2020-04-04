@@ -34,16 +34,21 @@ constraint
 constraint  
   among(array1d(schedule), games) = NB_GAMES;
  
- constraint  
+constraint  
   alldifferent_except_0(schedule);
   
 constraint 
   forall(v in venues, p in periods) (    
       team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 1], p] = (schedule[v,p] > 0)	 /\
-      team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 2], p] = (schedule[v,p] > 0)	 /\ 
-         
+      team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 2], p] = (schedule[v,p] > 0)	 /\
+      (schedule[v,p] = 0) <-> not team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 1], p]  /\
+      (schedule[v,p] = 0) <-> not team_playing[GAMES_TO_SCHEDULE[schedule[v,p], 2], p] 
   );
-  
+
+constraint
+  forall(t in TEAM_NAMES_ENUM) (
+    count(team_playing[t, periods], 1) = 2
+  );
  
 % solve
 solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
