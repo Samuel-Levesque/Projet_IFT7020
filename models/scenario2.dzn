@@ -29,3 +29,7 @@ TEAMS_TIME_PREFERENCES = array2d(TEAM_NAMES, periods,
 0,0,0,1,
 0,0,0,1,
 0,0,0,5]);
+
+COACH_NAMES = {Coach_1, Coach_2, Coach_3, Coach_4};
+
+COACHES_BY_TEAM = array1d(TEAM_NAMES, [Coach_1, Coach_2, Coach_3, Coach_4, Coach_1, Coach_2]);

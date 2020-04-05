@@ -10,6 +10,7 @@ int: NB_DIVISIONS;
 int: NB_TEAMS;
 int: NB_GAMES;
 enum TEAM_NAMES;
+enum COACH_NAMES;
 
 array[divisions] of int: NB_TEAMS_PER_DIVISION;
 
@@ -18,6 +19,8 @@ array[TEAM_NAMES, periods] of int: TEAMS_TIME_PREFERENCES; % Cost matrix by team
 
 array[games, 1..2] of TEAM_NAMES: GAMES_TO_SCHEDULE;
 array[venues, periods] of bool: VENUE_AVAILABILITIES;
+
+array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 
 % Ensembles
 set of int: venues = 1..NB_VENUES;
@@ -29,8 +32,12 @@ set of int: teams = 1..NB_TEAMS;
 % Variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
 array[TEAM_NAMES, venues, periods] of var bool: team_playing;
-array[games, games] of var bool: restricted_teams; % Matrice d'équipes qui ne peuvent pas jouer contre. Peut être fourni en input.
+%array[games, games] of var bool: restricted_teams; % Matrice d'équipes qui ne peuvent pas jouer contre. Peut être fourni en input.
 
+% Coaches matrix
+array[COACH_NAMES, periods] of var int: coach_playing;
+
+% Preferences costs
 array[TEAM_NAMES, periods] of var int: time_costs;
 var int: preferences_cost = sum(time_costs);
 
@@ -61,9 +68,17 @@ constraint forall(t in TEAM_NAMES, p in periods) (
 constraint forall(t in TEAM_NAMES, p in periods)(
   time_costs[t, p] = sum(team_playing[t, venues, p]) * TEAMS_TIME_PREFERENCES[t, p]
   );
+  
+% Filling out coach_playing matrix
+constraint forall(c in COACH_NAMES, p in periods)(
+  coach_playing[c, p] = sum(t in TEAM_NAMES where COACHES_BY_TEAM[t] = c, v in venues)(team_playing[t, v, p])
+  );
+  
+% A coach cannot play two matches at the same time
+constraint forall(c in COACH_NAMES, p in periods)(coach_playing[c, p] <= 1);
 
 % Output
-output 
+output
 [
   "Schedule: \n"
 ]
@@ -86,7 +101,13 @@ output
   "Total cost: \n"
 ]
 ++
-[show(preferences_cost)];
+[show(preferences_cost)]
+++
+[
+  "\nCoach Playing: \n"
+]
+++
+[join(" ", [show(coach_playing[i, j]) | j in periods]) ++ "\n" | i in COACH_NAMES];
 
 % Solve
 solve minimize preferences_cost;
