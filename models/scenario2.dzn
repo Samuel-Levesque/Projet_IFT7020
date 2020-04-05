@@ -21,3 +21,11 @@ GAMES_TO_SCHEDULE = [|Div_1_Team_1, Div_1_Team_2
   
  
 TEAM_NAMES = {Div_1_Team_1, Div_1_Team_2, Div_1_Team_3, Div_2_Team_1, Div_2_Team_2, Div_2_Team_3};
+  
+TEAMS_TIME_PREFERENCES = array2d(TEAM_NAMES, periods, 
+[0,0,0,5,
+0,0,0,1,
+0,0,0,1,
+0,0,0,1,
+0,0,0,1,
+0,0,0,5]);

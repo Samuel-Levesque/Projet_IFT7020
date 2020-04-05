@@ -9,13 +9,14 @@ int: GAME_DURATION;
 int: NB_DIVISIONS;
 int: NB_TEAMS;
 int: NB_GAMES;
-enum TEAM_NAMES_ENUM;
+enum TEAM_NAMES;
 
 array[divisions] of int: NB_TEAMS_PER_DIVISION;
-array[teams] of string: TEAM_NAMES;
 
+% Preferences
+array[TEAM_NAMES, periods] of int: TEAMS_TIME_PREFERENCES; % Cost matrix by team/period to minimize
 
-array[games, 1..2] of TEAM_NAMES_ENUM: GAMES_TO_SCHEDULE;
+array[games, 1..2] of TEAM_NAMES: GAMES_TO_SCHEDULE;
 array[venues, periods] of bool: VENUE_AVAILABILITIES;
 
 % Ensembles
@@ -27,8 +28,11 @@ set of int: teams = 1..NB_TEAMS;
 
 % Variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
-array[TEAM_NAMES_ENUM, venues, periods] of var bool: team_playing;
+array[TEAM_NAMES, venues, periods] of var bool: team_playing;
 array[games, games] of var bool: restricted_teams; % Matrice d'équipes qui ne peuvent pas jouer contre. Peut être fourni en input.
+
+array[TEAM_NAMES, periods] of var int: time_costs;
+var int: preferences_cost = sum(time_costs);
 
 % Constraints
 
@@ -44,13 +48,18 @@ constraint alldifferent_except_0(schedule);
 constraint among(NB_GAMES, array1d(schedule), games);
 
 % Filling out the team_playing matrix
-constraint forall (t in TEAM_NAMES_ENUM, v in venues, p in periods) (
+constraint forall (t in TEAM_NAMES, v in venues, p in periods) (
   team_playing[t, v, p] <-> (schedule[v, p] > 0) /\ (GAMES_TO_SCHEDULE[schedule[v, p], 1] = t \/ GAMES_TO_SCHEDULE[schedule[v, p], 2] = t)
   );
   
 % Making sure a team does not play two games at the same time
-constraint forall(t in TEAM_NAMES_ENUM, p in periods) (
+constraint forall(t in TEAM_NAMES, p in periods) (
   sum(team_playing[t, venues, p]) <= 1
+  );
+  
+% Filling out time_costs matrix
+constraint forall(t in TEAM_NAMES, p in periods)(
+  time_costs[t, p] = sum(team_playing[t, venues, p]) * TEAMS_TIME_PREFERENCES[t, p]
   );
 
 % Output
@@ -65,18 +74,19 @@ output
   "Teams Playing: \n"
 ]
 ++
-% team_playing;
-% [join(" ", [show(team_playing[TEAM_NAMES_ENUM[1], v, p]) | p in periods]) ++ "\n" | v in venues]
-% ++
-% [join(" ", [show(team_playing[TEAM_NAMES_ENUM[2], v, p]) | p in periods]) ++ "\n" | v in venues]
-% ++
-% [join(" ", [show(team_playing[TEAM_NAMES_ENUM[3], v, p]) | p in periods]) ++ "\n" | v in venues]
-% ++
-% [join(" ", [show(team_playing[TEAM_NAMES_ENUM[4], v, p]) | p in periods]) ++ "\n" | v in venues]
-% ++ 
-% [join(" ", [show(team_playing[TEAM_NAMES_ENUM[5], v, p]) | p in periods]) ++ "\n" | v in venues]
-% ++
-[join(" ", [show(team_playing[TEAM_NAMES_ENUM[6], v, p]) | p in periods]) ++ "\n" | v in venues];
+[join(" ", [show(team_playing[TEAM_NAMES[6], v, p]) | p in periods]) ++ "\n" | v in venues]
+++
+[
+  "Time Preferences: \n"
+]
+++
+[join(" ", [show(time_costs[i, j]) | j in periods]) ++ "\n" | i in TEAM_NAMES]
+++
+[
+  "Total cost: \n"
+]
+++
+[show(preferences_cost)];
 
 % Solve
-solve satisfy;
+solve minimize preferences_cost;
