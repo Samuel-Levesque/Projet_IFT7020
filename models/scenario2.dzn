@@ -6,7 +6,6 @@ NB_TEAMS = 6;
 NB_DIVISIONS = 2;
 
 NB_TEAMS_PER_DIVISION = [3, 3];
-% coaches = [1, 2, 3, 4, 5, 6]
 
 VENUE_AVAILABILITIES = [|true,true,false,false 
   |false,false,true,true

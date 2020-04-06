@@ -8,6 +8,7 @@ int: NB_GAMES;
 int: NB_TEAMS;
 int: NB_DIVISIONS;
 enum TEAM_NAMES;
+enum COACH_NAMES;
 
 set of int: games = 1..NB_GAMES;
 set of int: venues = 1..NB_VENUES;
@@ -18,11 +19,19 @@ set of int: teams = 1..NB_TEAMS;
 array[divisions] of int: NB_TEAMS_PER_DIVISION;
 array[venues, periods] of bool: VENUE_AVAILABILITIES;
 array[games, 1..2] of TEAM_NAMES: GAMES_TO_SCHEDULE;
+array[TEAM_NAMES, periods] of int: TEAMS_TIME_PREFERENCES; % Cost matrix by team/period to minimize
+array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 
 % decision variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
 array[TEAM_NAMES, venues, periods] of var bool: team_playing;
 
+% Coaches matrix
+array[COACH_NAMES, periods] of var int: coach_playing;
+
+% Preferences costs
+array[TEAM_NAMES, periods] of var int: time_costs;
+var int: preferences_cost = sum(time_costs);
 
 % constraints
 constraint
@@ -46,7 +55,20 @@ constraint
 constraint forall(t in TEAM_NAMES, p in periods) (
   sum(team_playing[t, venues, p]) <= 1
   );
- 
+  
+% Filling out time_costs matrix
+constraint forall(t in TEAM_NAMES, p in periods)(
+  time_costs[t, p] = sum(team_playing[t, venues, p]) * TEAMS_TIME_PREFERENCES[t, p]
+  );
+  
+% Filling out coach_playing matrix
+constraint forall(c in COACH_NAMES, p in periods)(
+  coach_playing[c, p] = sum(t in TEAM_NAMES where COACHES_BY_TEAM[t] = c, v in venues)(team_playing[t, v, p])
+  );
+  
+% A coach cannot play two matches at the same time
+constraint forall(c in COACH_NAMES, p in periods)(coach_playing[c, p] <= 1);
+
 % solve
 solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
 
@@ -58,13 +80,21 @@ output
 [
   join(" ", [show(schedule[v, p]) | p in periods]) ++ "\n" | v in venues
 ]
-% ++
-% [
-%   join(" ", [show(team_playing[t, p]) | p in periods]) ++ "\n" | t in TEAM_NAMES
-% ]
 ++
 [
-    show(GAMES_TO_SCHEDULE[1, 1])
+  if fix(team_playing[t, p, v]) = 1 then
+    %show(t) ++ " " ++ show(v) ++ " " ++ show(p) ++ " " ++ show(team_playing[t, p, v])
+%     show(t) ++ " p" ++ show(p) ++ " v" ++ show(v) ++ "\n"  
+      "3"  
+  else
+   ""% show(t) ++ " " ++ show(v) ++ " " ++ show(p) ++ " "
+  endif
+  | t in TEAM_NAMES, v in venues, p in periods
+%   join(" ", [show(team_playing[TEAM_NAMES, v, p]) | p in periods]) ++ "\n" | v in venues
+]
+++
+[
+    show(team_playing[TEAM_NAMES[1], 1, 1])
 ]
 % ++
 % [
