@@ -22,7 +22,14 @@ array[games, 1..2] of TEAM_NAMES: GAMES_TO_SCHEDULE;
 array[TEAM_NAMES, periods] of int: TEAMS_TIME_PREFERENCES; % Cost matrix by team/period to minimize
 array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 
-% decision variables
+set of int: S = 0..1;
+int: Q = 3; int: q0 = 1; set of int: STATE = 1..Q;
+array[STATE,S] of int: t =
+     [| 1, 1, 2    % state 1
+      | 2, 3, 0    % state 2
+      | 3, 3, 1|]; % state 3 
+
+% Decision variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
 array[TEAM_NAMES, venues, periods] of var bool: team_playing;
 
@@ -33,24 +40,24 @@ array[COACH_NAMES, periods] of var int: coach_playing;
 array[TEAM_NAMES, periods] of var int: time_costs;
 var int: preferences_cost = sum(time_costs);
 
-% constraints
-constraint
-  forall(v in venues, p in periods) (
+% Constraints
+
+% Game is only scheduled when venue is available
+constraint forall(v in venues, p in periods) (
     not VENUE_AVAILABILITIES[v, p] -> schedule[v, p] = 0
   );
 
-constraint  
-  among(array1d(schedule), games) = NB_GAMES;
- 
-constraint  
-  alldifferent_except_0(schedule);
-  
-constraint 
-  forall (t in TEAM_NAMES, v in venues, p in periods) (
+% The total number of matches played must be equal to the total number of matchs
+constraint among(array1d(schedule), games) = NB_GAMES;
+
+% Each game is only played once
+constraint alldifferent_except_0(schedule);
+
+% Filling out the team_playing matrix 
+constraint forall (t in TEAM_NAMES, v in venues, p in periods) (
     team_playing[t, v, p] <-> (schedule[v, p] > 0) /\ (GAMES_TO_SCHEDULE[schedule[v, p], 1] = t \/ GAMES_TO_SCHEDULE[schedule[v, p], 2] = t)
   );
   
-
 % Making sure a team does not play two games at the same time
 constraint forall(t in TEAM_NAMES, p in periods) (
   sum(team_playing[t, venues, p]) <= 1
@@ -68,6 +75,11 @@ constraint forall(c in COACH_NAMES, p in periods)(
   
 % A coach cannot play two matches at the same time
 constraint forall(c in COACH_NAMES, p in periods)(coach_playing[c, p] <= 1);
+
+% Forces a minimun number of periods between games
+constraint forall(t in TEAM_NAMES) (
+  regular([team_playing[t, venues, p] | p in periods], Q, S, t, q0, STATE) 
+  );
 
 % solve
 solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
