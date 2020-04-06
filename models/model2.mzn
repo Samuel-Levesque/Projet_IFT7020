@@ -73,29 +73,27 @@ constraint forall(c in COACH_NAMES, p in periods)(coach_playing[c, p] <= 1);
 solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
 
 output 
-[
-  "Schedule: \n"
-]
+["Schedule: \n"]
 ++
 [
   join(" ", [show(schedule[v, p]) | p in periods]) ++ "\n" | v in venues
 ]
 ++
-[
-  if fix(team_playing[t, p, v]) = 1 then
-    %show(t) ++ " " ++ show(v) ++ " " ++ show(p) ++ " " ++ show(team_playing[t, p, v])
-%     show(t) ++ " p" ++ show(p) ++ " v" ++ show(v) ++ "\n"  
-      "3"  
-  else
-   ""% show(t) ++ " " ++ show(v) ++ " " ++ show(p) ++ " "
-  endif
-  | t in TEAM_NAMES, v in venues, p in periods
-%   join(" ", [show(team_playing[TEAM_NAMES, v, p]) | p in periods]) ++ "\n" | v in venues
-]
+["\nTeams x Periods x Venues \n"]
 ++
 [
-    show(team_playing[TEAM_NAMES[1], 1, 1])
+%   show(t) ++ if fix(team_playing[t, v, p]) then show(v) else "" endif
+%   ++ if p = max(periods) then "\n" else "" endif
+%   | v in venues, p in periods| t in TEAM_NAMES
+
+  
+  show(t) ++ " " ++ join(" ", [join("", [if fix(team_playing[t, v, p]) then show(v) else "0" endif | v in venues]) | p in periods]) ++ "\n" | t in TEAM_NAMES
+
 ]
+% ++
+% [
+%     "\n" ++ show(team_playing[TEAM_NAMES, v, p]) | v in venues, p in periods
+% ]
 % ++
 % [
 %   join(" ", [show(GAMES_TO_SCHEDULE[g, o]) | o in 1..2]) ++ "\n" | g in games
