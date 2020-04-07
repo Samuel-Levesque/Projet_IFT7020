@@ -13,12 +13,13 @@ def array2str(a):
 #   |false,false,true,true
 #   |true,false,false,true|];
 
-venues = 5
-periods = 10
-venues_availability = []
-for v in range(venues):
-    a = np.random.randint(2, size=periods)
-    venues_availability.append(a.astype(bool))
+if __name__ == "__main__":
+    venues = 5
+    periods = 10
+    venues_availability = []
+    for v in range(venues):
+        a = np.random.randint(2, size=periods)
+        venues_availability.append(a.astype(bool))
 
-print(array2str(venues_availability))
-#print(venues_availability)
+    print(array2str(venues_availability))
+    #print(venues_availability)
