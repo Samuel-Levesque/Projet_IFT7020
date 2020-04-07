@@ -19,15 +19,30 @@ set of int: teams = 1..NB_TEAMS;
 array[divisions] of int: NB_TEAMS_PER_DIVISION;
 array[venues, periods] of bool: VENUE_AVAILABILITIES;
 array[games, 1..2] of TEAM_NAMES: GAMES_TO_SCHEDULE;
-array[TEAM_NAMES, periods] of int: TEAMS_TIME_PREFERENCES; % Cost matrix by team/period to minimize
+% array[TEAM_NAMES, periods] of int: TEAMS_TIME_PREFERENCES; % Cost matrix by team/period to minimize
 array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 
-set of int: S = 0..1;
-int: Q = 3; int: q0 = 1; set of int: STATE = 1..Q;
-array[STATE,S] of int: t =
-     [| 1, 1, 2    % state 1
-      | 2, 3, 0    % state 2
-      | 3, 3, 1|]; % state 3 
+
+% DFA that defines the number of breaks
+% - Q number of states. It depends on the # of periods as break
+% - S domain of the values 1..S
+% - q0 first state
+% - STATE set of all the states
+% - dfa the transition table
+int: S = 2;
+int: Q = 4; int: q0 = 1; set of int: STATE = 1..Q;
+% one period of break
+% array[STATE,1..2] of int: dfa =
+%      [| 1, 2    % state 1
+%       | 3, 0    % state 2
+%       | 3, 1|]; % state 3 
+
+% two periods of break
+array[STATE,1..2] of int: dfa =
+     [| 1, 2    % state 1
+      | 3, 0    % state 2
+      | 4, 0    % state 2
+      | 4, 1|]; % state 3 
 
 % Decision variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
@@ -59,26 +74,26 @@ constraint forall (t in TEAM_NAMES, v in venues, p in periods) (
   );
   
 % Making sure a team does not play two games at the same time
-constraint forall(t in TEAM_NAMES, p in periods) (
-  sum(team_playing[t, venues, p]) <= 1
-  );
+% constraint forall(t in TEAM_NAMES, p in periods) (
+%   sum(team_playing[t, venues, p]) <= 1
+%   );
   
-% Filling out time_costs matrix
-constraint forall(t in TEAM_NAMES, p in periods)(
-  time_costs[t, p] = sum(team_playing[t, venues, p]) * TEAMS_TIME_PREFERENCES[t, p]
-  );
+% % Filling out time_costs matrix
+% constraint forall(t in TEAM_NAMES, p in periods)(
+%   time_costs[t, p] = sum(team_playing[t, venues, p]) * TEAMS_TIME_PREFERENCES[t, p]
+%   );
   
-% Filling out coach_playing matrix
-constraint forall(c in COACH_NAMES, p in periods)(
-  coach_playing[c, p] = sum(t in TEAM_NAMES where COACHES_BY_TEAM[t] = c, v in venues)(team_playing[t, v, p])
-  );
+% % Filling out coach_playing matrix
+% constraint forall(c in COACH_NAMES, p in periods)(
+%   coach_playing[c, p] = sum(t in TEAM_NAMES where COACHES_BY_TEAM[t] = c, v in venues)(team_playing[t, v, p])
+%   );
   
-% A coach cannot play two matches at the same time
-constraint forall(c in COACH_NAMES, p in periods)(coach_playing[c, p] <= 1);
+% % A coach cannot play two matches at the same time
+% constraint forall(c in COACH_NAMES, p in periods)(coach_playing[c, p] <= 1);
 
 % Forces a minimun number of periods between games
 constraint forall(t in TEAM_NAMES) (
-  regular([team_playing[t, venues, p] | p in periods], Q, S, t, q0, STATE) 
+  regular([sum(team_playing[t, venues, p])+1 | p in periods], Q, S, dfa, q0, STATE) 
   );
 
 % solve
@@ -99,8 +114,12 @@ output
 %   | v in venues, p in periods| t in TEAM_NAMES
 
   
-  show(t) ++ " " ++ join(" ", [join("", [if fix(team_playing[t, v, p]) then show(v) else "0" endif | v in venues]) | p in periods]) ++ "\n" | t in TEAM_NAMES
+  show(t) ++ " " ++ join(" ", [join("", [if fix(team_playing[t, v, p]) then show(v) else "-" endif | v in venues]) | p in periods]) ++ "\n" | t in TEAM_NAMES
 
+]
+++
+[
+  join("", [show(sum(team_playing[t, venues, p])) | p in periods]) ++ "\n" | t in TEAM_NAMES
 ]
 % ++
 % [
