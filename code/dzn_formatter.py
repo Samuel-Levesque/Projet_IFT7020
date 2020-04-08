@@ -1,7 +1,8 @@
 import numpy as np
-
+import sys
 
 def array2str(a, remove_str_chars=True):
+    np.set_printoptions(threshold=sys.maxsize)
     a = np.array(a)
     s = np.array2string(a, separator=',')
     s = s.lower()
@@ -23,6 +24,7 @@ def list2enum_str(ls):
 
 
 def array2array2d(a):
+    np.set_printoptions(threshold=sys.maxsize)
     s = np.array2string(a)
     s = s.replace("[[", "__")
     s = s.replace("]]", "--")

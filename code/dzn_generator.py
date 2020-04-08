@@ -118,7 +118,7 @@ if __name__ == "__main__":
             "n_periods" : 50,
             "n_venues" : 6,
             "n_teams": 30,
-            "n_coaches": 5,
+            "n_coaches": 25,
             "n_teams_per_division" : [5, 5, 5, 5, 5, 5],
             "break_duration" : 10
         }]
@@ -138,7 +138,7 @@ if __name__ == "__main__":
         random_scenario = scenario.generate_scenario(n, p, v, t, c, d) 
         export(n + ".dzn", random_scenario)
 
-        s1 = f"Q = {b+2} and replace the DFA for:"
+        s1 = f"Q = {b+2} and replace the DFA for:\n"
         s1 += scenario.generate_dfa(b)
         create_file("dfa.mzn", s1)
 

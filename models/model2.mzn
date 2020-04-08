@@ -30,15 +30,20 @@ array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 % - STATE set of all the states
 % - dfa the transition table
 int: S = 2;
-int: Q = 7; int: q0 = 1; set of int: STATE = 1..Q;
+int: Q = 12; int: q0 = 1; set of int: STATE = 1..Q;
 array[STATE,1..2] of int: dfa =
-[|1,2
- |3,0
- |4,0
- |5,0
- |6,0
- |7,0
- |7,1|];
+[| 1, 2
+ | 3, 0
+ | 4, 0
+ | 5, 0
+ | 6, 0
+ | 7, 0
+ | 8, 0
+ | 9, 0
+ |10, 0
+ |11, 0
+ |12, 0
+ |12, 1|];
  % one period of break
 % array[STATE,1..2] of int: dfa =
 %      [| 1, 2    % state 1
