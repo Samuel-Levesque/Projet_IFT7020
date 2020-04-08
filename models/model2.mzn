@@ -3,24 +3,23 @@ include "scenario2.dzn";
 
 int: NB_PERIODS;
 int: NB_VENUES;
-int: NB_GAMES;
-int: NB_TEAMS;
 int: NB_DIVISIONS;
+int: NB_TEAMS;
+int: NB_GAMES;
 enum TEAM_NAMES;
 enum COACH_NAMES;
 
-set of int: games = 1..NB_GAMES;
 set of int: venues = 1..NB_VENUES;
 set of int: periods = 1..NB_PERIODS;
+set of int: games = 1..NB_GAMES;
 set of int: divisions = 1..NB_DIVISIONS;
 set of int: teams = 1..NB_TEAMS;
 
 array[divisions] of int: NB_TEAMS_PER_DIVISION;
-array[venues, periods] of bool: VENUE_AVAILABILITIES;
-array[games, 1..2] of TEAM_NAMES: GAMES_TO_SCHEDULE;
 array[TEAM_NAMES, periods] of int: TEAMS_TIME_PREFERENCES; % Cost matrix by team/period to minimize
+array[games, 1..2] of TEAM_NAMES: GAMES_TO_SCHEDULE;
+array[venues, periods] of bool: VENUE_AVAILABILITIES;
 array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
-
 
 % DFA that defines the number of breaks
 % - Q number of states. It depends on the # of periods as break
@@ -53,13 +52,10 @@ array[STATE,1..2] of int: dfa =
 % Decision variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
 array[TEAM_NAMES, venues, periods] of var bool: team_playing;
-
-% Coaches matrix
 array[COACH_NAMES, periods] of var int: coach_playing;
-
-% Preferences costs
 array[TEAM_NAMES, periods] of var int: time_costs;
 var int: preferences_cost = sum(time_costs);
+
 
 % Constraints
 
@@ -68,11 +64,11 @@ constraint forall(v in venues, p in periods) (
     not VENUE_AVAILABILITIES[v, p] -> schedule[v, p] = 0
   );
 
-% The total number of matches played must be equal to the total number of matchs
-constraint among(array1d(schedule), games) = NB_GAMES;
-
 % Each game is only played once
 constraint alldifferent_except_0(schedule);
+
+% The total number of matches played must be equal to the total number of matchs
+constraint among(array1d(schedule), games) = NB_GAMES;
 
 % Filling out the team_playing matrix 
 constraint forall (t in TEAM_NAMES, v in venues, p in periods) (
