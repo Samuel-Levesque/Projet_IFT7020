@@ -40,3 +40,28 @@ Les modèles seront comparés selon deux bases:
 
 + Nombre de contraintes brisées par l'horaire généré (à minimiser).
 + Temps de calcul pour obtenir l'horaire.
+
+Genération d'instances
+
+Le fichier `dzn_generator.py` génère des instances du problème base sur une configuration de scénario comme l'exemple suivant: 
+
+```json
+{
+    "name" : "toy",
+    "n_periods" : 50,
+    "n_venues" : 6,
+    "n_teams": 30,
+    "n_coaches": 25,
+    "n_teams_per_division" : [5, 5, 5, 5, 5, 5],
+    "break_duration" : 10
+}
+```
+- `name`: nom su scénario.
+- `n_periods`: nombre total de periodes.
+- `n_venues`: nombre de venues.
+- `n_teams`: nombre d'equipes.
+- `n_coaches`: nombre de coachs.
+- `n_teams_per_divison`: nombre d'equipes par division.
+- `break_duration`: intervalle minimum entre deux matchs d'une même équipe.
+
+Le script crée un ficher `dzn` prêt a être utilisé par le modèle et un `mzn` avec l'automate fini utilisé pour garantir le nombre minimum de pauses. Cet automate doit remplacer l'automate du modèle `mzn`.
