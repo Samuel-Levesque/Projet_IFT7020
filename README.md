@@ -43,7 +43,7 @@ Les modèles seront comparés selon deux bases:
 
 Genération d'instances
 
-Le fichier `dzn_generator.py` génère des instances du problème base sur une configuration de scénario comme l'exemple suivant: 
+Le fichier `dzn_generator.py` génère des instances du problème basé sur une configuration de scénario comme l'exemple suivant: 
 
 ```json
 {
