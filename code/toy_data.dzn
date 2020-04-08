@@ -1,9 +1,0 @@
-include "globals.mzn";
-include "toy_data.dzn";
-
-NUMBER_OF_VENUES = 3
-NUMBER_OF_PERIODS = 6
-
-VENUE_AVAILABILITY = [|0, 1, 1, 0, 1, 1
-  |1, 0, 1, 1 ,0, 1
-  |1, 1, 0, 1, 1, 0]

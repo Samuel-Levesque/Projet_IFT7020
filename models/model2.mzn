@@ -19,7 +19,7 @@ set of int: teams = 1..NB_TEAMS;
 array[divisions] of int: NB_TEAMS_PER_DIVISION;
 array[venues, periods] of bool: VENUE_AVAILABILITIES;
 array[games, 1..2] of TEAM_NAMES: GAMES_TO_SCHEDULE;
-% array[TEAM_NAMES, periods] of int: TEAMS_TIME_PREFERENCES; % Cost matrix by team/period to minimize
+array[TEAM_NAMES, periods] of int: TEAMS_TIME_PREFERENCES; % Cost matrix by team/period to minimize
 array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 
 
@@ -74,27 +74,27 @@ constraint forall (t in TEAM_NAMES, v in venues, p in periods) (
   );
   
 % Making sure a team does not play two games at the same time
-% constraint forall(t in TEAM_NAMES, p in periods) (
-%   sum(team_playing[t, venues, p]) <= 1
-%   );
+constraint forall(t in TEAM_NAMES, p in periods) (
+  sum(team_playing[t, venues, p]) <= 1
+  );
   
-% % Filling out time_costs matrix
-% constraint forall(t in TEAM_NAMES, p in periods)(
-%   time_costs[t, p] = sum(team_playing[t, venues, p]) * TEAMS_TIME_PREFERENCES[t, p]
-%   );
+% Filling out time_costs matrix
+constraint forall(t in TEAM_NAMES, p in periods)(
+  time_costs[t, p] = sum(team_playing[t, venues, p]) * TEAMS_TIME_PREFERENCES[t, p]
+  );
   
-% % Filling out coach_playing matrix
-% constraint forall(c in COACH_NAMES, p in periods)(
-%   coach_playing[c, p] = sum(t in TEAM_NAMES where COACHES_BY_TEAM[t] = c, v in venues)(team_playing[t, v, p])
-%   );
+% Filling out coach_playing matrix
+constraint forall(c in COACH_NAMES, p in periods)(
+  coach_playing[c, p] = sum(t in TEAM_NAMES where COACHES_BY_TEAM[t] = c, v in venues)(team_playing[t, v, p])
+  );
   
-% % A coach cannot play two matches at the same time
-% constraint forall(c in COACH_NAMES, p in periods)(coach_playing[c, p] <= 1);
+% A coach cannot play two matches at the same time
+constraint forall(c in COACH_NAMES, p in periods)(coach_playing[c, p] <= 1);
 
 % Forces a minimun number of periods between games
-constraint forall(t in TEAM_NAMES) (
-  regular([sum(team_playing[t, venues, p])+1 | p in periods], Q, S, dfa, q0, STATE) 
-  );
+% constraint forall(t in TEAM_NAMES) (
+%   regular([sum(team_playing[t, venues, p])+1 | p in periods], Q, S, dfa, q0, STATE) 
+%   );
 
 % solve
 solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
