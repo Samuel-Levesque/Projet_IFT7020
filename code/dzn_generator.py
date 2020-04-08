@@ -97,6 +97,16 @@ class Scenario:
                 coaches_list.append(f"Coach_{sampled_coach}")
         coaches_list = str(coaches_list).replace("'", "")
         return f"array1d(TEAM_NAMES, {coaches_list})"
+    
+
+    def generate_dfa(self, break_duration):
+        b = np.zeros((break_duration+2, 2), dtype=int)
+        b[0,:] = [1, 2]
+        b[break_duration+1,:] = [break_duration+2, 1]
+        for i in range(1, break_duration+1):
+            b[i,:] = [i+2, 0]
+        
+        return array2str(b)
 
 
 if __name__ == "__main__":
@@ -108,7 +118,8 @@ if __name__ == "__main__":
             "n_venues" : 3,
             "n_teams": 6,
             "n_coaches": 5,
-            "n_teams_per_division" : [3, 3]
+            "n_teams_per_division" : [3, 3],
+            "break_duration" : 3
         }]
 
     scenario = Scenario(seed=456) 
@@ -121,7 +132,11 @@ if __name__ == "__main__":
         t = s["n_teams"]
         c = s["n_coaches"]
         d = s["n_teams_per_division"]
+        b = s["break_duration"]
                      
         random_scenario = scenario.generate_scenario(n, p, v, t, c, d) 
         export(n + ".dzn", random_scenario)
+
+        print(f"Q = {b+2} and replace the DFA for:")
+        print(scenario.generate_dfa(b))
 
