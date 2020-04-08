@@ -3,22 +3,20 @@ import pprint
 import os
 import dzn_formatter
 
-def _create_dir(outdir):
-    if not os.path.exists(outdir):
-        os.makedirs(outdir)
 
-def export(path, data):
-    dirpath = os.path.dirname(os.path.abspath(path))
-    _create_dir(dirpath)
+def create_file(path, content):
+    p = os.path.dirname(os.path.abspath(path))
+    if not os.path.exists(p):
+        os.makedirs(p)
+    
     f = open(path, mode='w')
-   
-    for d in data:
-        string = str(d) + " = " + str(data[d]).replace('\'', '') +  ";"
-        print(string)
-        f.writelines(string + "\n")
- 
+    f.writelines(content)
     f.close()
 
+
+def export(path, data):    
+    dzn = [str(d) + " = " + str(data[d]).replace('\'', '') +  ";\n" for d in data]  
+    create_file(path, dzn)
 
 if __name__ == "__main__":
     data = {

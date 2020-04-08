@@ -30,19 +30,21 @@ array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 % - STATE set of all the states
 % - dfa the transition table
 int: S = 2;
-int: Q = 4; int: q0 = 1; set of int: STATE = 1..Q;
-% one period of break
+int: Q = 7; int: q0 = 1; set of int: STATE = 1..Q;
+array[STATE,1..2] of int: dfa =
+[|1,2
+ |3,0
+ |4,0
+ |5,0
+ |6,0
+ |7,0
+ |7,1|];
+ % one period of break
 % array[STATE,1..2] of int: dfa =
 %      [| 1, 2    % state 1
 %       | 3, 0    % state 2
 %       | 3, 1|]; % state 3 
 
-% two periods of break
-array[STATE,1..2] of int: dfa =
-     [| 1, 2    % state 1
-      | 3, 0    % state 2
-      | 4, 0    % state 2
-      | 4, 1|]; % state 3 
 
 % Decision variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
@@ -92,9 +94,9 @@ constraint forall(c in COACH_NAMES, p in periods)(
 constraint forall(c in COACH_NAMES, p in periods)(coach_playing[c, p] <= 1);
 
 % Forces a minimun number of periods between games
-% constraint forall(t in TEAM_NAMES) (
-%   regular([sum(team_playing[t, venues, p])+1 | p in periods], Q, S, dfa, q0, STATE) 
-%   );
+constraint forall(t in TEAM_NAMES) (
+  regular([sum(team_playing[t, venues, p])+1 | p in periods], Q, S, dfa, q0, STATE) 
+  );
 
 % solve
 solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;

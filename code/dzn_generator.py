@@ -4,6 +4,7 @@ from dzn_formatter import array2str
 from dzn_formatter import list2enum_str
 from dzn_formatter import array2array2d
 from dzn_export import export
+from dzn_export import create_file
 
 
 class Scenario:
@@ -114,12 +115,12 @@ if __name__ == "__main__":
     scenarios = [
         {
             "name" : "toy",
-            "n_periods" : 4,
-            "n_venues" : 3,
-            "n_teams": 6,
+            "n_periods" : 50,
+            "n_venues" : 6,
+            "n_teams": 30,
             "n_coaches": 5,
-            "n_teams_per_division" : [3, 3],
-            "break_duration" : 3
+            "n_teams_per_division" : [5, 5, 5, 5, 5, 5],
+            "break_duration" : 10
         }]
 
     scenario = Scenario(seed=456) 
@@ -137,6 +138,7 @@ if __name__ == "__main__":
         random_scenario = scenario.generate_scenario(n, p, v, t, c, d) 
         export(n + ".dzn", random_scenario)
 
-        print(f"Q = {b+2} and replace the DFA for:")
-        print(scenario.generate_dfa(b))
+        s1 = f"Q = {b+2} and replace the DFA for:"
+        s1 += scenario.generate_dfa(b)
+        create_file("dfa.mzn", s1)
 
