@@ -3,13 +3,14 @@
 """
 Created on Wed Mar 25 19:18:11 2020
 
-@author: Samuel_Levesque
+@author: Samuel Levesque, Bruno Kinder, Mikael Gelinas
 """
 import datetime
 import random
 import pandas
 import json
 import os
+import dznexport
 
 def _create_dir(outdir):
     if not os.path.exists(outdir):
@@ -27,6 +28,7 @@ class ConstraintsGenerator:
         self.game_length = game_length
         self.divisions_size = divisions_size
         self.number_of_games = self._calculate_n_games(divisions_size)
+        self.number_of_venues = len(venue_n_courts)
 
         self.teams = self._generate_teams(divisions_size, n_shared_coaches)
         self.court_availabilities = self._generate_court_availabilities(
@@ -226,12 +228,29 @@ class ConstraintsGenerator:
             n_applied_restrictions += 1
         return venue_restrictions
 
+    def scenario_to_dictonnary(self):
+        data = {"NB_PERIODS" : "TODO",
+                "NB_VENUES" : self.number_of_venues,
+                "GAME_DURATION" : self.game_length,
+                "NB_GAMES" : int(self.number_of_games),
+                "NB_DIVISIONS" : len(self.divisions_size),
+                "NB_TEAMS_PER_DIVISION" : self.divisions_size,
+                "VENUE_AVAILABILITIES" : "TODO",
+                "GAMES_TO_SCHEDULE" : "TODO",
+                "TEAM_NAMES" : "TODO",
+                "TEAMS_TIME_PREFERENCES" : "TODO",
+                "COACH_NAMES" : "TODO",
+                "COACHES_BY_TEAM" : "TODO"}
+        return data
+
     def export_scenario_tables(self, scenario_name):
         _create_dir(f"scenarios/{scenario_name}")
         self.teams.to_csv(f"scenarios/{scenario_name}/teams.csv", index=False)
         self._format_export_court_availabilities(scenario_name)
         self._format_export_teams_time_restrictions(scenario_name)
         self._format_export_teams_venue_restrictions(scenario_name)
+        dznexport.export(f"scenarios/{scenario_name}/scenario.dnz", self.scenario_to_dictonnary())
+
 
     def _format_export_court_availabilities(self, scenario_name):
         court_availabilities = self.court_availabilities
