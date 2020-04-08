@@ -3,7 +3,6 @@ include "scenario2.dzn";
 
 int: NB_PERIODS;
 int: NB_VENUES;
-int: GAME_DURATION;
 int: NB_GAMES;
 int: NB_TEAMS;
 int: NB_DIVISIONS;

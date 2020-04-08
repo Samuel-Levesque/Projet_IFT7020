@@ -22,7 +22,6 @@ if __name__ == "__main__":
     data = {
         "NB_PERIODS" : "a1",
         "NB_VENUES" : 3,
-        "GAME_DURATION" : ["1", "2"],
         "NB_GAMES" : {"q1" : "a4"},
         "NB_TEAMS" : "{a,b}",
         "NB_DIVISIONS" : {"c", "d"}

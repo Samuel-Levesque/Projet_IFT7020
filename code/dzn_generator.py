@@ -18,7 +18,6 @@ class Scenario:
         scenario = {
             "NB_PERIODS" : n_periods,
             "NB_VENUES" : n_venues,
-            "GAME_DURATION" : 60,
             "NB_GAMES" : self.get_total_number_of_games(n_teams_per_division),
             "NB_TEAMS" : n_teams,
             "NB_DIVISIONS" : len(n_teams_per_division),

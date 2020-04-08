@@ -5,7 +5,6 @@ include "scenario2.dzn";
 % Constantes
 int: NB_PERIODS;
 int: NB_VENUES;
-int: GAME_DURATION;
 int: NB_DIVISIONS;
 int: NB_TEAMS;
 int: NB_GAMES;
