@@ -101,7 +101,7 @@ class Scenario:
 
     def generate_dfa(self, break_duration):
         b = np.zeros((break_duration+2, 2), dtype=int)
-        b[0,:] = [1, 2]
+        b[0,:] = [break_duration+2, 2]
         b[break_duration+1,:] = [break_duration+2, 2]
         for i in range(1, break_duration+1):
             b[i,:] = [i+2, 0]
@@ -119,7 +119,7 @@ if __name__ == "__main__":
             "n_teams": 20,
             "n_coaches": 25,
             "n_teams_per_division" : [5, 5, 5, 5],
-            "break_duration" : 2
+            "break_duration" : 4
         }]
 
     scenario = Scenario(seed=456) 
