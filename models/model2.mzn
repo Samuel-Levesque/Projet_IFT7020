@@ -1,5 +1,5 @@
 include "globals.mzn"; 
-include "scenario2.dzn";
+include "bruno.dzn";
 
 int: NB_PERIODS;
 int: NB_VENUES;
@@ -28,20 +28,14 @@ array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 % - STATE set of all the states
 % - dfa the transition table
 int: S = 2;
-int: Q = 12; int: q0 = 1; set of int: STATE = 1..Q;
+int: Q = 6; int: q0 = 1; set of int: STATE = 1..Q;
 array[STATE,1..2] of int: dfa =
-[| 1, 2
- | 3, 0
- | 4, 0
- | 5, 0
- | 6, 0
- | 7, 0
- | 8, 0
- | 9, 0
- |10, 0
- |11, 0
- |12, 0
- |12, 1|];
+[|1,2
+ |3,0
+ |4,0
+ |5,0
+ |6,0
+ |6,2|];
  % one period of break
 % array[STATE,1..2] of int: dfa =
 %      [| 1, 2    % state 1
@@ -95,11 +89,12 @@ constraint forall(c in COACH_NAMES, p in periods) (coach_playing[c, p] <= 1);
 
 % Forces a minimun number of periods between games
 constraint forall(t in TEAM_NAMES) (
-    regular([sum(team_playing[t, venues, p])+1 | p in periods], Q, S, dfa, q0, STATE) 
+    regular([sum(team_playing[t, venues, p])+1 | p in periods], Q, S, dfa, q0, {1,2,Q}) 
   );
 
 % solve
 solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
+%solve :: int_search(time_costs, smallest, indomain_min, complete) minimize preferences_cost;
 
 output 
 ["Schedule: \n"]
