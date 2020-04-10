@@ -1,5 +1,5 @@
 include "globals.mzn"; 
-include "bruno.dzn";
+include "toy.dzn";
 
 int: NB_PERIODS;
 int: NB_VENUES;
@@ -78,8 +78,8 @@ constraint forall(t in TEAM_NAMES, p in 1..(NB_PERIODS-1))(
 %   );
 
 % solve
-solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
-%solve :: int_search(time_costs, smallest, indomain_min, complete) minimize preferences_cost;
+% solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
+solve :: int_search(time_costs, smallest, indomain_min, complete) minimize preferences_cost;
 
 output 
 ["Schedule: \n"]
