@@ -23,7 +23,7 @@ if __name__ == "__main__":
             "n_coaches": 4,
             "n_teams_per_division" : [2, 2],
             "break_duration" : 2,
-            "model" : join('models', 'model2.mzn')
+            "model" : join('models', 'auto.mzn')
         }]
     scenario = generator.Scenario(seed=456) 
 
