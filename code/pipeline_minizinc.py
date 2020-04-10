@@ -17,12 +17,13 @@ if __name__ == "__main__":
     scenarios = [
         {
             "name" : "toy",
-            "n_periods" : 4,
-            "n_venues" : 3,
-            "n_teams": 6,
-            "n_coaches": 5,
-            "n_teams_per_division" : [3, 3],
-            "break_duration" : 10
+            "n_periods" : 8,
+            "n_venues" : 4,
+            "n_teams": 4,
+            "n_coaches": 4,
+            "n_teams_per_division" : [2, 2],
+            "break_duration" : 2,
+            "model" : join('models', 'auto.mzn')
         }]
     scenario = generator.Scenario(seed=456) 
 
@@ -37,13 +38,32 @@ if __name__ == "__main__":
         b = s["break_duration"]
         
         resultName = str(n) + '-' + str(p) + '-' + str(v) + '-' + str(t) + '-' + str(c) + '-' + str(d) + '-' + str(b)
+        dzn_file = join('test', resultName + '.dzn')
 
         #print(resultName)
         random_scenario = scenario.generate_scenario(n, p, v, t, c, d) 
-        export.export(resultName + ".dzn", random_scenario)
-
-        batch.excuteMinizinc(join('models', 'model2.mzn'), join(resultName + '.dzn'), resultName + '.txt')
+        export.export(dzn_file, random_scenario)
 
         s1 = f"Q = {b+2} and replace the DFA for:\n"
         s1 += scenario.generate_dfa(b)
         export.create_file("dfa.mzn", s1)
+
+        outputSatisfiablecsv = "outputSatisfiablecsv.csv"
+        outputUnSatisfiablecsv = "outputUnSatisfiablecsv.csv"
+
+        unsatisfiable, stringtime, stringnode, stringnogood = batch.excuteMinizinc(s["model"], dzn_file, join('test', resultName + '.txt'))
+
+        resultat = s["model"] + ' ' + str(n) + ' ' + str(p) + ' ' + str(v) + ' ' + str(t) + ' ' + str(c) + ' "' + str(d) + '" ' + str(b)
+
+        if(unsatisfiable):
+            print("The scenario is unsatisfiable.")
+            resultat = resultat + '\n'
+
+            with open(outputUnSatisfiablecsv, mode='a') as f:
+                f.writelines(resultat)
+        else:
+            resultat = resultat + ' ' + stringtime + ' ' + stringnode + ' ' + stringnogood + '\n'
+
+            with open(outputSatisfiablecsv, mode='a') as f:
+                f.writelines(resultat)
+
