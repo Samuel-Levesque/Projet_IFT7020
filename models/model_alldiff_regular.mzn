@@ -1,5 +1,5 @@
 include "globals.mzn"; 
-include "toy.dzn";
+% include "toy.dzn";
 
 int: NB_PERIODS;
 int: NB_VENUES;
