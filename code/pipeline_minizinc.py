@@ -3,28 +3,46 @@ import dzn_generator as generator
 import dzn_export as export
 from os.path import join
 
+def n_teams_per_division(n_teams, nb_teams_by_division):
+    nb_division = int(n_teams//nb_teams_by_division)
+    last_division = n_teams % nb_teams_by_division
+    division = []
+    for i in range(nb_division):
+        division.append(nb_teams_by_division)
+    if(last_division != 0):
+        division.append(last_division)
+
+    return division
+
+def nb_coaches(n_teams, pourcentage_nb_coach):
+    n_coach = int(n_teams*pourcentage_nb_coach)
+    if(n_teams == 0):
+        return 1
+    else: return n_coach
+
+def createScenario(n_periods, n_venues, n_teams, pourcentage_nb_coach, nb_teams_by_division, model):
+    return {
+                "name" : "toy",
+                "n_periods" : n_periods,
+                "n_venues" : n_venues,
+                "n_teams": n_teams,
+                "n_coaches": nb_coaches(n_teams, pourcentage_nb_coach),
+                "n_teams_per_division" : n_teams_per_division(n_teams, nb_teams_by_division),
+                "break_duration" : 2,
+                "model" : join('models', model + '.mzn')
+            }
+
 if __name__ == "__main__":
-        # scenarios = [
-    #     {
-    #         "name" : "toy",
-    #         "n_periods" : 50,
-    #         "n_venues" : 6,
-    #         "n_teams": 30,
-    #         "n_coaches": 25,
-    #         "n_teams_per_division" : [5, 5, 5, 5, 5, 5],
-    #         "break_duration" : 10
-    #     }]
-    scenarios = [
-        {
-            "name" : "toy",
-            "n_periods" : 8,
-            "n_venues" : 4,
-            "n_teams": 4,
-            "n_coaches": 4,
-            "n_teams_per_division" : [2, 2],
-            "break_duration" : 2,
-            "model" : join('models', 'auto.mzn')
-        }]
+    models = ["auto", "model_alldiff_regular", "model_alldiff_sat", "model_sums_regular", "model_sums_sat"]
+    scenarios = []
+    # for model in models:
+    #     for p in range(4, 41, 2):
+    #         for v in range(4, 11, 2):
+    #             for t in range(5, 56, 5):
+    #                 scenarios.append(createScenario(p, v, t, model))
+
+    #createScenario(n_periods, n_venues, n_teams, pourcentage_nb_coach, nb_teams_by_division, model)
+    scenarios.append(createScenario(10, 10, 8, 1, 2, models[0]))
     scenario = generator.Scenario(seed=456) 
 
     for s in scenarios:
@@ -48,22 +66,28 @@ if __name__ == "__main__":
         s1 += scenario.generate_dfa(b)
         export.create_file("dfa.mzn", s1)
 
-        outputSatisfiablecsv = "outputSatisfiablecsv.csv"
-        outputUnSatisfiablecsv = "outputUnSatisfiablecsv.csv"
-
-        unsatisfiable, stringtime, stringnode, stringnogood = batch.excuteMinizinc(s["model"], dzn_file, join('test', resultName + '.txt'))
+        outputSatisfiable = "outputSatisfiable.csv"
+        outputUnSatisfiable = "outputUnSatisfiable.csv"
+        outputUnSatisfiableTimeout = "outputUnSatisfiableTimeout.csv"
 
         resultat = s["model"] + ' ' + str(n) + ' ' + str(p) + ' ' + str(v) + ' ' + str(t) + ' ' + str(c) + ' "' + str(d) + '" ' + str(b)
+        print("Trying : " + resultat)
 
-        if(unsatisfiable):
-            print("The scenario is unsatisfiable.")
-            resultat = resultat + '\n'
+        try:
+            unsatisfiable, stringtime, stringnode, stringnogood = batch.excuteMinizinc(s["model"], dzn_file, join('test', resultName + '.txt'), 10*60)
 
-            with open(outputUnSatisfiablecsv, mode='a') as f:
-                f.writelines(resultat)
-        else:
-            resultat = resultat + ' ' + stringtime + ' ' + stringnode + ' ' + stringnogood + '\n'
+            if(unsatisfiable):
+                print("The scenario is unsatisfiable.")
+                resultat = resultat + '\n'
 
-            with open(outputSatisfiablecsv, mode='a') as f:
-                f.writelines(resultat)
+                with open(outputUnSatisfiable, mode='a') as f:
+                    f.writelines(resultat)
+            else:
+                resultat = resultat + ' ' + stringtime + ' ' + stringnode + ' ' + stringnogood + '\n'
 
+                with open(outputSatisfiable, mode='a') as f:
+                    f.writelines(resultat)
+        except Exception as inst:
+            resultat = resultat + ' ' + str(inst.args) + '\n'
+            with open(outputUnSatisfiableTimeout, mode='a') as f:
+                    f.writelines(resultat)
