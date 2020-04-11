@@ -6,7 +6,7 @@ from os.path import join, exists
 if __name__ == "__main__":
     
     pourcentage_nb_coach = 0.95 
-    models = ["auto", "model_alldiff_regular", "model_alldiff_sat", "model_sums_regular", "model_sums_sat"]
+    models = ["model_alldiff_regular", "model_alldiff_sat", "model_sums_regular", "model_sums_sat"]
     scenarios = []
 
     for n_teams in (5, 40, 5):
@@ -16,7 +16,7 @@ if __name__ == "__main__":
                 "n_periods" : 2*n_teams,
                 "n_venues" : 4,
                 "n_teams": n_teams,
-                "n_coaches": n_teams * pourcentage_nb_coach,
+                "n_coaches": int(n_teams * pourcentage_nb_coach),
                 "n_teams_per_division" : [5] * (n_teams // 5),
                 "break_duration" : 2
             }
@@ -37,7 +37,8 @@ if __name__ == "__main__":
             d = s["n_teams_per_division"]
             b = s["break_duration"]
             
-            dzn_file = f"test_{n}-{p}-{v}-{t}-{c}-{d}-{b}.dzn"
+            dzn_file = f"test/{n}-{p}-{v}-{t}-{c}-{d}-{b}.dzn"
+            result_file = f"test/{n}-{p}-{v}-{t}-{c}-{d}-{b}.txt"
 
             random_scenario = scenario.generate_scenario(n, p, v, t, c, d) 
             export.export(dzn_file, random_scenario)
@@ -51,7 +52,7 @@ if __name__ == "__main__":
             print("Trying : " + resultat)
 
             try:
-                unsatisfiable, stringtime, stringnode, stringnogood = batch.excuteMinizinc(model, dzn_file, f"test_resultName"), 10000)
+                unsatisfiable, stringtime, stringnode, stringnogood = batch.excuteMinizinc(f"models/{model}.mzn", dzn_file, result_file, 10*60*1000)
 
                 if(unsatisfiable):
                     print("The scenario is unsatisfiable.")
