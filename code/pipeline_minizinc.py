@@ -63,7 +63,7 @@ if __name__ == "__main__":
         d = s["n_teams_per_division"]
         b = s["break_duration"]
         
-        resultName = str(n) + '-' s["model"] + '-' + str(p) + '-' + str(v) + '-' + str(t) + '-' + str(c) + '-' + str(d) + '-' + str(b)
+        resultName = str(n) + '-' + s["model"] + '-' + str(p) + '-' + str(v) + '-' + str(t) + '-' + str(c) + '-' + str(d) + '-' + str(b)
         dzn_file = join('test', resultName + '.dzn')
 
         #print(resultName)
