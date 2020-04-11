@@ -1,0 +1,20 @@
+NB_PERIODS = 5;
+NB_VENUES = 2;
+NB_GAMES = 4;
+NB_TEAMS = 5;
+NB_DIVISIONS = 2;
+NB_TEAMS_PER_DIVISION = [3, 2];
+VENUE_AVAILABILITIES = [|false,true,false,true, false
+ |true,true,true,false, true|];
+GAMES_TO_SCHEDULE = [|div_1_team_1,div_1_team_2
+ |div_1_team_1,div_1_team_3
+ |div_1_team_2,div_1_team_3
+ |div_2_team_1,div_2_team_2|];
+TEAM_NAMES = {div_1_team_1, div_1_team_2, div_1_team_3, div_2_team_1, div_2_team_2};
+TEAMS_TIME_PREFERENCES = array2d(TEAM_NAMES, periods, [0,4,0,1,0,
+0,0,0,0,0,
+0,0,0,0,0,
+3,0,0,0,0,
+0,0,0,4,0]);
+COACH_NAMES = {Coach_1, Coach_2, Coach_3, Coach_4};
+COACHES_BY_TEAM = array1d(TEAM_NAMES, [Coach_1, Coach_2, Coach_3, Coach_4, Coach_2]);
