@@ -4,10 +4,10 @@ NB_GAMES = 10;
 NB_TEAMS = 5;
 NB_DIVISIONS = 1;
 NB_TEAMS_PER_DIVISION = [5];
-VENUE_AVAILABILITIES = [| true,false, true,false,false, true, true,false,false, true
- |false, true, true,false,false, true, true,false, true,false
- |false, true,false, true, true,false, true, true, true, true
- |false,false,false,false,false,false, true,false,false, true|];
+VENUE_AVAILABILITIES = [| true,false,false,false,false, true, true, true, true,false
+ | true, true,false,false, true,false, true, true,false, true
+ | true, true, true,false, true, true,false,false, true,false
+ |false,false,false,false,false, true, true,false, true,false|];
 GAMES_TO_SCHEDULE = [|div_1_team_1,div_1_team_2
  |div_1_team_1,div_1_team_3
  |div_1_team_1,div_1_team_4
