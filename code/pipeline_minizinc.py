@@ -33,7 +33,8 @@ def createScenario(n_periods, n_venues, n_teams, pourcentage_nb_coach, nb_teams_
             }
 
 if __name__ == "__main__":
-    models = ["auto", "model_alldiff_regular", "model_alldiff_sat", "model_sums_regular", "model_sums_sat"]
+    #models = ["auto", "model_alldiff_regular", "model_alldiff_sat", "model_sums_regular", "model_sums_sat"]
+    models = ["model_alldiff_regular", "model_alldiff_sat", "model_sums_regular", "model_sums_sat"]
     scenarios = []
     # for model in models:
     #     for p in range(4, 41, 2):
@@ -43,7 +44,13 @@ if __name__ == "__main__":
 
     #createScenario(n_periods, n_venues, n_teams, pourcentage_nb_coach, nb_teams_by_division, model)
     #scenarios.append(createScenario(40, 20, 60, 1, 5, models[1]))
-    scenarios.append(createScenario(4, 4, 8, 1, 2, models[1]))
+    #scenarios.append(createScenario(4, 4, 8, 1, 2, models[1]))
+
+    for model in models:
+        for p in range(4, 41, 2):
+            for t in range(5, 21, 5)
+                scenarios.append(createScenario(p, 4, t, 1, 5, model))
+
     scenario = generator.Scenario(seed=456) 
 
     for s in scenarios:
@@ -80,7 +87,7 @@ if __name__ == "__main__":
             print("Trying : " + resultat)
 
             try:
-                unsatisfiable, stringtime, stringnode, stringnogood = batch.excuteMinizinc(s["model"], dzn_file, join('test', resultName + '.txt'), 10000)
+                unsatisfiable, stringtime, stringnode, stringnogood = batch.excuteMinizinc(s["model"], dzn_file, join('test', resultName + '.txt'), 10*60*1000)
 
                 if(unsatisfiable):
                     print("The scenario is unsatisfiable.")

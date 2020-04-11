@@ -39,9 +39,9 @@ def extractDataToCSV(outputPath, time_to_shut_off):
 
 def excuteMinizinc(pathTomodel, pathToScenario, outputPath, time_to_shut_off, mode='w'):
     #processCompile = subprocess.Popen(['minizinc', '-c', '--solver', 'chuffed', pathTomodel, pathToScenario], stdout=subprocess.PIPE, universal_newlines=True)
-    print("Compiling model : " + pathTomodel)
-    os.system('minizinc -c -v --solver chuffed "' + pathTomodel + '" "' + pathToScenario +  '"')
-    print("Done compiling model : " + pathTomodel)
+    #print("Compiling model : " + pathTomodel)
+    #os.system('minizinc -c -v --solver chuffed "' + pathTomodel + '" "' + pathToScenario +  '"')
+    #print("Done compiling model : " + pathTomodel)
     # while True:
     #     output = processCompile.stdout.readline()
     #     if(output.strip() != ''):
@@ -56,9 +56,10 @@ def excuteMinizinc(pathTomodel, pathToScenario, outputPath, time_to_shut_off, mo
     #                 print(output.strip())
     #         break
 
-    pathToFZN = pathTomodel[:len(pathTomodel)-3] + 'fzn'
-    pathToOZN = pathTomodel[:len(pathTomodel)-3] + 'ozn'
-    process = subprocess.Popen(['minizinc', '--solver', 'chuffed', '-a', '--verbose-solving', '--solver-statistics', '-f', '--solver-time-limit', str(time_to_shut_off), pathToFZN], stdout=subprocess.PIPE, universal_newlines=True)
+    #pathToFZN = pathTomodel[:len(pathTomodel)-3] + 'fzn'
+    #pathToOZN = pathTomodel[:len(pathTomodel)-3] + 'ozn'
+    #process = subprocess.Popen(['minizinc', '--solver', 'chuffed', '-a', '--verbose-solving', '--solver-statistics', '-f', '--solver-time-limit', str(time_to_shut_off), pathToFZN], stdout=subprocess.PIPE, universal_newlines=True)
+    process = subprocess.Popen(['minizinc', '--solver', 'chuffed', '-a', '--verbose-solving', '--solver-statistics', '-f', '--solver-time-limit', str(time_to_shut_off), pathTomodel, pathToScenario], stdout=subprocess.PIPE, universal_newlines=True)
 
     asbsolutpath = dirname(abspath(outputPath))
     if not exists(asbsolutpath):
