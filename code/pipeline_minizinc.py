@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     for model in models:
         for p in range(4, 41, 2):
-            for t in range(5, 21, 5)
+            for t in range(5, 21, 5):
                 scenarios.append(createScenario(p, 4, t, 1, 5, model))
 
     scenario = generator.Scenario(seed=456) 
