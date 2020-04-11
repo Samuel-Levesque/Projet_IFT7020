@@ -9,7 +9,7 @@ if __name__ == "__main__":
     models = ["model_alldiff_regular", "model_alldiff_sat", "model_sums_regular", "model_sums_sat"]
     scenarios = []
 
-    for n_teams in (5, 40, 5):
+    for n_teams in range(5, 40, 5):
 
         scenario = {
                 "name" : "toy",
@@ -37,8 +37,8 @@ if __name__ == "__main__":
             d = s["n_teams_per_division"]
             b = s["break_duration"]
             
-            dzn_file = f"test/{n}-{p}-{v}-{t}-{c}-{d}-{b}.dzn"
-            result_file = f"test/{n}-{p}-{v}-{t}-{c}-{d}-{b}.txt"
+            dzn_file = f"test/{n}-{model}-{p}-{v}-{t}-{c}-{d}-{b}.dzn"
+            result_file = f"test/{n}-{model}-{p}-{v}-{t}-{c}-{d}-{b}.txt"
 
             random_scenario = scenario.generate_scenario(n, p, v, t, c, d) 
             export.export(dzn_file, random_scenario)
