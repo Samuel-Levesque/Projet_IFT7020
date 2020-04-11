@@ -12,35 +12,25 @@ if __name__ == "__main__":
     id = "bruno"
     pourcentage_nb_coach = 1 
     models = ["model_alldiff_regular", "model_alldiff_sat", "model_sums_regular", "model_sums_sat"]
-    scenarios = []
 
-    for n_teams in range(5, 40, 5):
-
-        scenario = {
-                "name" : "toy",
-                "n_periods" : 2*n_teams,
-                "n_venues" : 4,
-                "n_teams": n_teams,
-                "n_coaches": int(n_teams * pourcentage_nb_coach),
-                "n_teams_per_division" : [5] * (n_teams // 5),
-                "break_duration" : 2
-            }
-   
-        scenarios.append(scenario)
-   
+    models = {
+        "model_alldiff_regular": 80,
+        "model_alldiff_sat": 80,
+        "model_sums_regular": 55,
+        "model_sums_sat": 55
+    }
+  
     scenario = generator.Scenario(seed=456) 
 
     for model in models:
 
-        for s in scenarios:
-
-            n = s["name"]
-            p = s["n_periods"]
-            v = s["n_venues"]
-            t = s["n_teams"]
-            c = s["n_coaches"]
-            d = s["n_teams_per_division"]
-            b = s["break_duration"]
+         for n_teams in range(5, models[model], 5):
+                
+            p = 2 * n_teams
+            v = 4
+            t = n_teams
+            c = int(n_teams * pourcentage_nb_coach)
+            d = [5] * (n_teams // 5)                
             
             test_path = f"test_{id}/{model}-t{t}-p{p}-d{len(d)}-v{v}-c{c}-{b}"
             dzn_file = f"{test_path}.dzn"
