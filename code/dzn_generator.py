@@ -8,12 +8,12 @@ from dzn_export import create_file
 
 
 class Scenario:
-    
+
     def __init__(self, seed):
         random.seed(seed)
 
-    def generate_scenario(self, name, n_periods, n_venues, n_teams, n_coaches, n_teams_per_division):   
-        self.name = name   
+    def generate_scenario(self, name, n_periods, n_venues, n_teams, n_coaches, n_teams_per_division):
+        self.name = name
 
         scenario = {
             "NB_PERIODS" : n_periods,
@@ -31,7 +31,7 @@ class Scenario:
         }
 
         return scenario
-        
+
     def generate_team_names(self, n_teams_per_division):
         team_names = []
         for div_number, n_teams in enumerate(n_teams_per_division, 1):
@@ -39,9 +39,9 @@ class Scenario:
                 team_names.append(f"div_{div_number}_team_{team_number}")
 
         return list2enum_str(team_names)
-    
 
-    def generate_venues_avaliability(self, n_venues, n_periods):   
+
+    def generate_venues_avaliability(self, n_venues, n_periods):
         venues_availability = []
 
         for _ in range(n_venues):
@@ -97,7 +97,7 @@ class Scenario:
                 coaches_list.append(f"Coach_{sampled_coach}")
         coaches_list = str(coaches_list).replace("'", "")
         return f"array1d(TEAM_NAMES, {coaches_list})"
-    
+
 
     def generate_dfa(self, break_duration):
         b = np.zeros((break_duration+2, 2), dtype=int)
@@ -105,7 +105,7 @@ class Scenario:
         b[break_duration+1,:] = [break_duration+2, 2]
         for i in range(1, break_duration+1):
             b[i,:] = [i+2, 0]
-        
+
         return array2str(b)
 
 
@@ -122,23 +122,20 @@ if __name__ == "__main__":
             "break_duration" : 1
         }]
 
-    scenario = Scenario(seed=456) 
 
-    for s in scenarios:
+if __name__ == "__main__":
+    gen = Scenario(seed=456)
+    for team_number in [50, 55]:
+        name = "Sam_runs"
+        n_periods =  2*team_number
+        n_venues =  4
+        n_coaches = team_number
+        n_teams = team_number
+        n_teams_per_division = [5] * (team_number // 5)
+        break_duration = 1
+        random_scenario = gen.generate_scenario(name, n_periods, n_venues, n_teams,
+                                                n_coaches, n_teams_per_division)
+        export(f"../models/{name}_{n_periods}_{n_venues}_{n_coaches}_{n_teams}.dzn", random_scenario)
 
-        n = s["name"]
-        p = s["n_periods"]
-        v = s["n_venues"]
-        t = s["n_teams"]
-        c = s["n_coaches"]
-        d = s["n_teams_per_division"]
-        b = s["break_duration"]
-                     
-        random_scenario = scenario.generate_scenario(n, p, v, t, c, d) 
-       # export(n + ".dzn", random_scenario)
-        export("../models/bruno.dzn", random_scenario)
 
-        s1 = f"Q = {b+2} and replace the DFA for:\n"
-        s1 += scenario.generate_dfa(b)
-        create_file("dfa.mzn", s1)
 
