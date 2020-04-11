@@ -38,7 +38,7 @@ def extractDataToCSV(outputPath, time_to_shut_off):
     
     return unsatisfiable, stringtime, stringnode, stringnogood
 
-def excuteMinizinc(pathTomodel, pathToScenario, outputPath, time_to_shut_off, mode='w'):
+def excuteMinizinc(path2model, path2Scenario, outputPath, timeout):
 
     parms = [
         'C:/Program Files/MiniZinc/minizinc.exe',
@@ -49,13 +49,13 @@ def excuteMinizinc(pathTomodel, pathToScenario, outputPath, time_to_shut_off, mo
         '--solver-statistics', 
         '-f', 
         '--solver-time-limit', 
-        str(time_to_shut_off), 
-        pathTomodel, 
-        pathToScenario
+        str(timeout), 
+        path2model, 
+        path2Scenario
     ]
     
     out, err = subprocess.Popen(parms, stdout=subprocess.PIPE, universal_newlines=True).communicate() 
 
     create_file(outputPath, out)
   
-    return extractDataToCSV(outputPath, time_to_shut_off)
+    return extractDataToCSV(outputPath, timeout)

@@ -1,0 +1,21 @@
+=====UNSATISFIABLE=====
+%%%mzn-stat: nodes=23459
+%%%mzn-stat: failures=16768
+%%%mzn-stat: restarts=62
+%%%mzn-stat: variables=5178
+%%%mzn-stat: intVars=398
+%%%mzn-stat: boolVariables=4778
+%%%mzn-stat: propagators=322
+%%%mzn-stat: propagations=1200113
+%%%mzn-stat: peakDepth=95
+%%%mzn-stat: nogoods=16768
+%%%mzn-stat: backjumps=5666
+%%%mzn-stat: peakMem=0.00
+%%%mzn-stat: time=2.583
+%%%mzn-stat: initTime=0.046
+%%%mzn-stat: solveTime=2.537
+%%%mzn-stat: objective=-1
+%%%mzn-stat: optTime=0.000
+%%%mzn-stat: baseMem=0.00
+%%%mzn-stat: trailMem=0.02
+%%%mzn-stat: randomSeed=1586639414
