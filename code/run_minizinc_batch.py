@@ -7,7 +7,7 @@ import mmap
 import datetime
 import sys
 
-def extractDataToCSV(outputPath):
+def extractDataToCSV(outputPath, time_to_shut_off):
 
     unsatisfiable = True
     stringtime = ""
@@ -18,6 +18,8 @@ def extractDataToCSV(outputPath):
         if(s.find(b'=====UNSATISFIABLE=====') != -1):
             #print("The scenario is unsatisfiable.")
             unsatisfiable = True
+        elif(s.find(b'% Time limit exceeded!') != -1):
+            raise Exception(str(time_to_shut_off))
         else:
             unsatisfiable = False
             f.seek(0, os.SEEK_SET)
@@ -36,28 +38,28 @@ def extractDataToCSV(outputPath):
     return unsatisfiable, stringtime, stringnode, stringnogood
 
 def excuteMinizinc(pathTomodel, pathToScenario, outputPath, time_to_shut_off, mode='w'):
-    try:
-        from queue import Queue, Empty
-    except ImportError:
-        from Queue import Queue, Empty  # python 2.x
+    #processCompile = subprocess.Popen(['minizinc', '-c', '--solver', 'chuffed', pathTomodel, pathToScenario], stdout=subprocess.PIPE, universal_newlines=True)
+    #print("Compiling model : " + pathTomodel)
+    #os.system('minizinc -c -v --solver chuffed "' + pathTomodel + '" "' + pathToScenario +  '"')
+    #print("Done compiling model : " + pathTomodel)
+    # while True:
+    #     output = processCompile.stdout.readline()
+    #     if(output.strip() != ''):
+    #         print(output.strip())
+    #     # Do something else
+    #     return_code = processCompile.poll()
+    #     if return_code is not None:
+    #         #print('RETURN CODE', return_code)
+    #         # Process has finished, read rest of the output 
+    #         for output in processCompile.stdout.readlines():
+    #             if(output.strip() != ''):
+    #                 print(output.strip())
+    #         break
 
-    ON_POSIX = 'posix' in sys.builtin_module_names
-
-    def enqueue_output(out, queue):
-        for line in iter(out.readline, b''):
-            queue.put(line)
-        out.close()
-
-    process = subprocess.Popen(['minizinc', '--solver', 'chuffed', '--verbose-solving', '--solver-statistics', '-f', pathTomodel, pathToScenario], 
-                            stdout=subprocess.PIPE,
-                            universal_newlines=True,
-                            bufsize=1,
-                            close_fds=ON_POSIX)
-
-    q = Queue()
-    t = Thread(target=enqueue_output, args=(process.stdout, q))
-    t.daemon = True # thread dies with the program
-    t.start()
+    #pathToFZN = pathTomodel[:len(pathTomodel)-3] + 'fzn'
+    #pathToOZN = pathTomodel[:len(pathTomodel)-3] + 'ozn'
+    #process = subprocess.Popen(['minizinc', '--solver', 'chuffed', '-a', '--verbose-solving', '--solver-statistics', '-f', '--solver-time-limit', str(time_to_shut_off), pathToFZN], stdout=subprocess.PIPE, universal_newlines=True)
+    process = subprocess.Popen(['minizinc', '--solver', 'chuffed', '-a', '--verbose-solving', '--solver-statistics', '-f', '--solver-time-limit', str(time_to_shut_off), pathTomodel, pathToScenario], stdout=subprocess.PIPE, universal_newlines=True)
 
     asbsolutpath = dirname(abspath(outputPath))
     if not exists(asbsolutpath):
@@ -65,52 +67,26 @@ def excuteMinizinc(pathTomodel, pathToScenario, outputPath, time_to_shut_off, mo
 
     print("Saving full result to : " + abspath(outputPath))
     f = open(outputPath, mode)
-    begin_time = datetime.datetime.now()
-    time_to_shut_off = datetime.timedelta(seconds=time_to_shut_off)
     while True:
-        timeDiff = datetime.datetime.now() - begin_time
-        
-        if(timeDiff >= time_to_shut_off):
-            print("Time exceeded : " + str(timeDiff))
-            process.kill()
-            raise Exception(str(timeDiff))
-
-        # read line without blocking
-        try:  line = q.get_nowait() # or q.get(timeout=.1)
-        except Empty:
-            #print('no output yet')
-            a = 1
-        else: # got line
-            if(line != ''):
-                print(line)
-                f.writelines(str(line) + '\n')
-
+        output = process.stdout.readline()
+        if(output.strip() != ''):
+            print(output.strip())
+            f.writelines(str(output.strip()) + '\n')
+        # Do something else
         return_code = process.poll()
         if return_code is not None:
             #print('RETURN CODE', return_code)
             # Process has finished, read rest of the output 
-            # for output in process.stdout.readlines():
-            #     print(output.strip())
-            #     f.writelines(str(output.strip()) + '\n')
+            for output in process.stdout.readlines():
+                if(output.strip() != ''):
+                    print(output.strip())
+                    f.writelines(str(output.strip()) + '\n')
             break
-
-        # output = process.stdout.readline()
-        # print(output.strip())
-        # f.writelines(str(output.strip()) + '\n')
-        # # Do something else
-        # return_code = process.poll()
-        # if return_code is not None:
-        #     #print('RETURN CODE', return_code)
-        #     # Process has finished, read rest of the output 
-        #     for output in process.stdout.readlines():
-        #         print(output.strip())
-        #         f.writelines(str(output.strip()) + '\n')
-        #     break
     f.close()
     print("Saving full result to : " + abspath(outputPath) + ". Done.")
 
-    return extractDataToCSV(outputPath)
+    return extractDataToCSV(outputPath, time_to_shut_off)
 
 
 if(__name__ == "__main__"):
-    excuteMinizinc(join('models', 'auto.mzn'), join('test', 'toy-10-4-10-9-[5, 5]-2.dzn'), join('test', 'result.txt'), 1)
+    excuteMinizinc(join('models', 'auto.mzn'), join('test', 'toy-40-20-60-60-[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]-2.dzn'), join('models', 'result.txt'), 1*1000)

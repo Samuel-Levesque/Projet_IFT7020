@@ -106,16 +106,12 @@ output
 ++
 ["\nTeams x Periods x Venues \n"]
 ++
-[
-%   show(t) ++ if fix(team_playing[t, v, p]) then show(v) else "" endif
-%   ++ if p = max(periods) then "\n" else "" endif
-%   | v in venues, p in periods| t in TEAM_NAMES
+% [
+ 
+%   show(t) ++ " " ++ join(" ", [join("", [if fix(team_playing[t, v, p]) then show(v) else "-" endif | v in venues]) | p in periods]) ++ "\n" | t in TEAM_NAMES
 
-  
-  show(t) ++ " " ++ join(" ", [join("", [if fix(team_playing[t, v, p]) then show(v) else "-" endif | v in venues]) | p in periods]) ++ "\n" | t in TEAM_NAMES
-
-]
-++
+% ]
+% ++
 [
   join("", [show(sum(team_playing[t, venues, p])) | p in periods]) ++ "\n" | t in TEAM_NAMES
 ]

@@ -109,38 +109,18 @@ class Scenario:
         return array2str(b)
 
 
-#if __name__ == "__main__":
-#
-#    scenarios = [
-#        {
-#            "name" : "toy",
-#            "n_periods" : 40,
-#            "n_venues" : 6,
-#            "n_teams": 20,
-#            "n_coaches": 25,
-#            "n_teams_per_division" : [5, 5, 5, 5],
-#            "break_duration" : 4
-#        }]
-#
-#    scenario = Scenario(seed=456)
-#
-#    for s in scenarios:
-#
-#        n = s["name"]
-#        p = s["n_periods"]
-#        v = s["n_venues"]
-#        t = s["n_teams"]
-#        c = s["n_coaches"]
-#        d = s["n_teams_per_division"]
-#        b = s["break_duration"]
-#
-#        random_scenario = scenario.generate_scenario(n, p, v, t, c, d)
-#       # export(n + ".dzn", random_scenario)
-#        export("../models/bruno.dzn", random_scenario)
-#
-#        s1 = f"Q = {b+2} and replace the DFA for:\n"
-#        s1 += scenario.generate_dfa(b)
-#        create_file("dfa.mzn", s1)
+if __name__ == "__main__":
+    
+    scenarios = [
+        {
+            "name" : "toy",
+            "n_periods" :15,
+            "n_venues" : 4,
+            "n_teams": 10,
+            "n_coaches": 10,
+            "n_teams_per_division" : [5, 5],
+            "break_duration" : 1
+        }]
 
 
 if __name__ == "__main__":
