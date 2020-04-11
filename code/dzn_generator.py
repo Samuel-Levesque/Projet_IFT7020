@@ -114,12 +114,12 @@ if __name__ == "__main__":
     scenarios = [
         {
             "name" : "toy",
-            "n_periods" : 40,
-            "n_venues" : 6,
-            "n_teams": 20,
-            "n_coaches": 25,
-            "n_teams_per_division" : [5, 5, 5, 5],
-            "break_duration" : 4
+            "n_periods" :15,
+            "n_venues" : 4,
+            "n_teams": 10,
+            "n_coaches": 10,
+            "n_teams_per_division" : [5, 5],
+            "break_duration" : 1
         }]
 
     scenario = Scenario(seed=456) 
