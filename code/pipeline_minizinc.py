@@ -67,10 +67,10 @@ if __name__ == "__main__":
         dzn_file = join('test', resultName + '.dzn')
 
         #print(resultName)
-        if(True):
-        #if(exists(dzn_file)):
-        #    print('Already processed : ' + dzn_file)
-        #else:
+        #if(True):
+        if(exists(dzn_file)):
+            print('Already processed : ' + dzn_file)
+        else:
             random_scenario = scenario.generate_scenario(n, p, v, t, c, d) 
             export.export(dzn_file, random_scenario)
 
