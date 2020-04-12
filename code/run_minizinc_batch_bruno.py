@@ -50,7 +50,7 @@ def parser(content):
 
 if __name__ == "__main__":
     
-    id = "bruno_2"
+    id = "bruno"
     pourcentage_nb_coach = 1 
     
     models = {
