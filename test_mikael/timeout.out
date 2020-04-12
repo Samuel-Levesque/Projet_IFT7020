@@ -1,0 +1,41 @@
+model_alldiff_regular;5;10;1;4;5;('cannot mmap an empty file',)
+
+model_alldiff_regular;10;20;2;4;10;('cannot mmap an empty file',)
+
+model_alldiff_regular;15;30;3;4;15;('cannot mmap an empty file',)
+
+model_alldiff_regular;20;40;4;4;20;('cannot mmap an empty file',)
+
+model_alldiff_regular;25;50;5;4;25;('cannot mmap an empty file',)
+
+model_alldiff_regular;30;60;6;4;30;('cannot mmap an empty file',)
+
+model_alldiff_regular;35;70;7;4;35;('cannot mmap an empty file',)
+
+model_alldiff_regular;40;80;8;4;40;('cannot mmap an empty file',)
+
+model_alldiff_regular;45;90;9;4;45;('cannot mmap an empty file',)
+
+model_alldiff_regular;50;100;10;4;50;('cannot mmap an empty file',)
+
+model_alldiff_regular;55;110;11;4;55;('cannot mmap an empty file',)
+
+model_alldiff_regular;60;120;12;4;60;('cannot mmap an empty file',)
+
+model_alldiff_regular;65;130;13;4;65;('cannot mmap an empty file',)
+
+model_alldiff_regular;70;140;14;4;70;('cannot mmap an empty file',)
+
+model_alldiff_regular;75;150;15;4;75;('cannot mmap an empty file',)
+
+model_alldiff_sat;5;10;1;4;5;('cannot mmap an empty file',)
+
+model_alldiff_sat;10;20;2;4;10;('cannot mmap an empty file',)
+
+model_alldiff_sat;15;30;3;4;15;('cannot mmap an empty file',)
+
+model_alldiff_sat;20;40;4;4;20;('cannot mmap an empty file',)
+
+model_alldiff_sat;25;50;5;4;25;('cannot mmap an empty file',)
+
+model_sums_sat;5;10;1;4;5
