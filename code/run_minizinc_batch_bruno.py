@@ -52,8 +52,7 @@ if __name__ == "__main__":
     
     id = "bruno_2"
     pourcentage_nb_coach = 1 
-    models = ["model_alldiff_regular", "model_alldiff_sat", "model_sums_regular", "model_sums_sat"]
-
+    
     models = {
         "model_alldiff_regular": 85,
         "model_alldiff_sat": 85,
@@ -75,7 +74,8 @@ if __name__ == "__main__":
         s = {
             "dzn": f"test_{id}/scenario_t{t}-p{p}-d{len(d)}-v{v}-c{c}.dzn",
             "name": f"t{t}-p{p}-d{len(d)}-v{v}-c{c}",
-            "results": f"{t};{p};{len(d)};{v};{c}",           
+            "results": f"{t};{p};{len(d)};{v};{c}", 
+            "n_teams": n_teams           
         }    
 
         random_scenario = scenario.generate_scenario("test", p, v, t, c, d) 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
          for s in scenarios:
 
             # We dont run all models because of time restrictions
-            if t > models[model]:
+            if s["n_teams"] > models[model]:
                 continue
 
             txt_file = f"test_{id}/{model}-{s['name']}.txt"
