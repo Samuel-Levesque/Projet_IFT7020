@@ -54,8 +54,8 @@ if __name__ == "__main__":
     pourcentage_nb_coach = 1 
     
     models = {
-        "model_alldiff_regular": 85,
-        "model_alldiff_sat": 85,
+        "model_alldiff_regular": 95,
+        "model_alldiff_sat": 95,
         "model_sums_regular": 60,
         "model_sums_sat": 60
     }
