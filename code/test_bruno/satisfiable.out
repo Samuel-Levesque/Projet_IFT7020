@@ -47,3 +47,8 @@ model_sums_sat;35;70;7;4;35;33.508;414320;15775
 model_sums_sat;40;80;8;4;40;62.770;822229;23657
 model_sums_sat;45;90;9;4;45;155.689;1617235;44571
 model_sums_sat;50;100;10;4;50;363.806;2271424;96781
+model_alldiff_regular;5;10;1;4;5;0.173;5195;3215
+model_alldiff_regular;10;20;2;4;10;0.190;5968;485
+model_alldiff_regular;15;30;3;4;15;0.424;8869;549
+model_alldiff_regular;20;40;4;4;20;1.358;24711;849
+model_alldiff_regular;25;50;5;4;25;2.418;33591;862
