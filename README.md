@@ -41,7 +41,17 @@ Les modèles seront comparés selon deux bases:
 + Nombre de contraintes brisées par l'horaire généré (à minimiser).
 + Temps de calcul pour obtenir l'horaire.
 
-Genération d'instances
+Le project est structuré selon :
+
+```
+├── code (générateur de scénarios, modèles et graphiques)
+├── models (modèles générer pour des tâches spécifiques)
+|   ├── breaks (modèles qui font varier l'automate de pauses)
+├── results (résultats générés par les batchs)
+├── scenarios (scénarios générer pour des tâches spécifique)
+```
+
+## Genération d'instances
 
 Le fichier `dzn_generator.py` génère des instances du problème basé sur une configuration de scénario comme l'exemple suivant: 
 
