@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import os
 from dzn_formatter import array2str
 from dzn_formatter import list2enum_str
 from dzn_formatter import array2array2d
@@ -106,7 +107,21 @@ class Scenario:
         for i in range(1, break_duration+1):
             b[i,:] = [i+2, 0]
 
-        return array2str(b)
+        return f"{array2str(b)};"
+
+    
+    def generate_models_dfa(self, model, out, break_duration):
+        f = open(model, "r")
+        s = f.read()
+        f.close()
+
+        dfa = self.generate_dfa(break_duration)
+        s = s.replace("#NSTATE#", str(break_duration+2))
+        s = s.replace("#DFA#", dfa)
+
+        name = os.path.basename(model)
+        create_file(f"{out}/{name[:-4]}_b{break_duration:02d}{name[-4:]}", s)
+
 
 
 if __name__ == "__main__":
@@ -132,10 +147,14 @@ if __name__ == "__main__":
         n_coaches = team_number
         n_teams = team_number
         n_teams_per_division = [5] * (team_number // 5)
-        break_duration = 1
+        break_duration = 2
         random_scenario = gen.generate_scenario(name, n_periods, n_venues, n_teams,
                                                 n_coaches, n_teams_per_division)
         export(f"../models/{name}_{n_periods}_{n_venues}_{n_coaches}_{n_teams}.dzn", random_scenario)
+
+    #for b in range(1, 21):
+    #    gen.generate_models_dfa("../models/model_alldiff_regular_breaks.mzn", "../models/breaks", b)
+    #create_file("dfa.mzn", gen.generate_dfa(3))
 
 
 

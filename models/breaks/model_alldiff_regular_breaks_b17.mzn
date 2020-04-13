@@ -1,5 +1,5 @@
 include "globals.mzn"; 
-include "scenario_t50-p100-d10-v4-c50.dzn";
+% include "toy.dzn";
 
 int: NB_PERIODS;
 int: NB_VENUES;
@@ -28,19 +28,37 @@ array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 % - STATE set of all the states
 % - dfa the transition table
 int: S = 2;
-int: Q = 5; int: q0 = 1; set of int: STATE = 1..Q;
-array[STATE,1..2] of int: dfa =
-[|5,2
- |3,0
- |4,0
- |5,0
- |5,2|];
- % one period of break
+% int: Q = 6; int: q0 = 1; set of int: STATE = 1..Q;
 % array[STATE,1..2] of int: dfa =
-%      [| 1, 2    % state 1
-%       | 3, 0    % state 2
-%       | 3, 1|]; % state 3 
+% [|6,2
+%  |3,0
+%  |4,0
+%  |5,0
+%  |6,0
+%  |6,2|];
 
+%  one period of break
+int: Q = 19; int: q0 = 1; set of int: STATE = 1..Q;
+array[STATE, 1..2] of int: dfa =
+     [|19, 2
+ | 3, 0
+ | 4, 0
+ | 5, 0
+ | 6, 0
+ | 7, 0
+ | 8, 0
+ | 9, 0
+ |10, 0
+ |11, 0
+ |12, 0
+ |13, 0
+ |14, 0
+ |15, 0
+ |16, 0
+ |17, 0
+ |18, 0
+ |19, 0
+ |19, 2|];
 
 % Decision variables
 array[venues, periods] of var 0..NB_GAMES: schedule;
@@ -92,7 +110,7 @@ constraint forall(t in TEAM_NAMES) (
   );
 
 % solve
-%solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
+% solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
 solve :: int_search(time_costs, smallest, indomain_min, complete) minimize preferences_cost;
 
 output 
@@ -102,24 +120,6 @@ output
   join(" ", [show(schedule[v, p]) | p in periods]) ++ "\n" | v in venues
 ]
 ++
-["\nTeams x Periods x Venues \n"]
-++
-% [
- 
-%   show(t) ++ " " ++ join(" ", [join("", [if fix(team_playing[t, v, p]) then show(v) else "-" endif | v in venues]) | p in periods]) ++ "\n" | t in TEAM_NAMES
-
-% ]
-% ++
 [
   join("", [show(sum(team_playing[t, venues, p])) | p in periods]) ++ "\n" | t in TEAM_NAMES
-]
-% ++
-% [
-%     "\n" ++ show(team_playing[TEAM_NAMES, v, p]) | v in venues, p in periods
-% ]
-% ++
-% [
-%   join(" ", [show(GAMES_TO_SCHEDULE[g, o]) | o in 1..2]) ++ "\n" | g in games
-% ]
-
-;
+];
