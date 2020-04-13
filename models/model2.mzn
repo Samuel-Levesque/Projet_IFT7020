@@ -1,5 +1,5 @@
 include "globals.mzn"; 
-include "bruno.dzn";
+include "scenario_t50-p100-d10-v4-c50.dzn";
 
 int: NB_PERIODS;
 int: NB_VENUES;
@@ -28,15 +28,11 @@ array[TEAM_NAMES] of COACH_NAMES: COACHES_BY_TEAM;
 % - STATE set of all the states
 % - dfa the transition table
 int: S = 2;
-int: Q = 6; int: q0 = 1; set of int: STATE = 1..Q;
+int: Q = 3; int: q0 = 1; set of int: STATE = 1..Q;
 array[STATE,1..2] of int: dfa =
-[|6,2
- |3,0
- |4,0
- |5,0
- |6,0
- |6,2|];
-
+     [| 3, 2    % state 1
+      | 3, 0    % state 2
+      | 3, 2|]; % state 3 
  % one period of break
 % array[STATE,1..2] of int: dfa =
 %      [| 1, 2    % state 1
@@ -94,8 +90,8 @@ constraint forall(t in TEAM_NAMES) (
   );
 
 % solve
-solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
-%solve :: int_search(time_costs, smallest, indomain_min, complete) minimize preferences_cost;
+%solve :: int_search([schedule[v,p] | v in venues, p in periods], most_constrained, indomain_split, complete) satisfy;
+solve :: int_search(time_costs, smallest, indomain_min, complete) minimize preferences_cost;
 
 output 
 ["Schedule: \n"]
