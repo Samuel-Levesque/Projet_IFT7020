@@ -1,6 +1,7 @@
 import subprocess
 import dzn_generator
 import re
+import os
 from dzn_export import create_file
 
 
@@ -48,9 +49,8 @@ def parser(content):
 
     return duration, nodes, nogoods
 
-if __name__ == "__main__":
-    
-    id = "bruno"
+
+def run_all_models(id):
     pourcentage_nb_coach = 1 
     
     models = {
@@ -106,3 +106,28 @@ if __name__ == "__main__":
                     
             except Exception as e:
                 add2file(f"test_{id}/timeout.out", f"{resultat};{str(e.args)}\n")
+
+
+def run_models(id, models, scenario):
+
+    models = [f for f in os.scandir(models)] 
+    
+    for model in models:
+    
+        try:
+            out = run_minizinc(model.path, scenario, f"test_{id}/{model.name}_t", 10*60*1000)
+
+            if is_satisfiable:
+                duration, nodes, nogoods = parser(out)
+                add2file(f"test_{id}/satisfiable.out", f"{model.name};{duration};{nodes};{nogoods}")
+            else :
+                    add2file(f"test_{id}/un_satisfiable.out", f"{model.name}")
+                
+        except Exception as e:
+            add2file(f"test_{id}/timeout.out", f"{model.name};{str(e.args)}\n")
+
+
+if __name__ == "__main__":
+    
+    #run_all_models("bruno")
+    run_models("breaks", "../models/breaks", "../code/test_bruno/scenario_t50-p100-d10-v4-c50.dzn")
