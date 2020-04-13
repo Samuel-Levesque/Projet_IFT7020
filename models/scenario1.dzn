@@ -1,7 +1,0 @@
-n = 4;
-num_courts = 3;
-game_duration = 60;
-
-division = [1, 2, 3, 4, 5]
-coaches = [1, 2, 3, 4, 5, 6]
-
