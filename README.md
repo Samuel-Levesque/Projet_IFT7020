@@ -43,12 +43,12 @@ Les modèles seront comparés selon deux bases:
 
 Le project est structuré selon :
 
-```
+```bash
 ├── code (générateur de scénarios, modèles et graphiques)
 ├── models (modèles générer pour des tâches spécifiques)
-|   ├── breaks (modèles qui font varier l'automate de pauses)
+|   ├── breaks (modèles qui font varier l''automate de pauses)
 ├── results (résultats générés par les batchs)
-├── scenarios (scénarios générer pour des tâches spécifique)
+└── scenarios (scénarios générer pour des tâches spécifique)
 ```
 
 ## Genération d'instances
