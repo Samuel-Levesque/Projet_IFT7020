@@ -7,7 +7,6 @@ from dzn_formatter import array2array2d
 from dzn_export import export
 from dzn_export import create_file
 
-
 class Scenario:
 
     def __init__(self, seed):
@@ -15,7 +14,6 @@ class Scenario:
 
     def generate_scenario(self, name, n_periods, n_venues, n_teams, n_coaches, n_teams_per_division):
         self.name = name
-
         scenario = {
             "NB_PERIODS" : n_periods,
             "NB_VENUES" : n_venues,
@@ -30,7 +28,6 @@ class Scenario:
             "COACH_NAMES" : self.generate_coach_names(n_coaches),
             "COACHES_BY_TEAM" : self.generate_coaches_by_team(n_coaches, n_teams)
         }
-
         return scenario
 
     def generate_team_names(self, n_teams_per_division):
@@ -41,16 +38,13 @@ class Scenario:
 
         return list2enum_str(team_names)
 
-
     def generate_venues_avaliability(self, n_venues, n_periods):
         venues_availability = []
-
         for _ in range(n_venues):
             a = np.random.randint(2, size=n_periods)
             venues_availability.append(a.astype(bool))
 
         return array2str(venues_availability)
-
 
     def generate_games_to_schedule(self, n_teams_per_division):
         total_n_games = self.get_total_number_of_games(n_teams_per_division)
@@ -64,7 +58,6 @@ class Scenario:
                     i += 1
         return array2str(games_to_schedule)
 
-
     def generate_teams_time_preferences(self, n_teams, n_periods, no_cost_proportion=0.8):
         teams_time_preferences = np.full((n_teams, n_periods), 0)
         for t in range(n_teams):
@@ -73,20 +66,17 @@ class Scenario:
                     teams_time_preferences[t, p] = random.randint(1, 5)
         return array2array2d(teams_time_preferences)
 
-
     def get_total_number_of_games(self, n_teams_per_division):
         total_n_games = 0
         for n_teams in n_teams_per_division:
             total_n_games += n_teams * (n_teams - 1)/2
         return int(total_n_games)
 
-
     def generate_coach_names(self, n_coaches):
         coach_names = []
         for coach_number in range(1, n_coaches + 1):
             coach_names.append(f"Coach_{coach_number}")
         return list2enum_str(coach_names)
-
 
     def generate_coaches_by_team(self, n_coaches, n_teams):
         coaches_list = []
@@ -99,7 +89,6 @@ class Scenario:
         coaches_list = str(coaches_list).replace("'", "")
         return f"array1d(TEAM_NAMES, {coaches_list})"
 
-
     def generate_dfa(self, break_duration):
         b = np.zeros((break_duration+2, 2), dtype=int)
         b[0,:] = [break_duration+2, 2]
@@ -108,7 +97,6 @@ class Scenario:
             b[i,:] = [i+2, 0]
 
         return f"{array2str(b)};"
-
     
     def generate_models_dfa(self, model, out, break_duration):
         f = open(model, "r")
@@ -122,26 +110,10 @@ class Scenario:
         name = os.path.basename(model)
         create_file(f"{out}/{name[:-4]}_b{break_duration:02d}{name[-4:]}", s)
 
-
-
-if __name__ == "__main__":
-    
-    scenarios = [
-        {
-            "name" : "toy",
-            "n_periods" :15,
-            "n_venues" : 4,
-            "n_teams": 10,
-            "n_coaches": 10,
-            "n_teams_per_division" : [5, 5],
-            "break_duration" : 1
-        }]
-
-
 if __name__ == "__main__":
     gen = Scenario(seed=456)
     for team_number in [50, 55]:
-        name = "Sam_runs"
+        name = "runs"
         n_periods =  2*team_number
         n_venues =  4
         n_coaches = team_number

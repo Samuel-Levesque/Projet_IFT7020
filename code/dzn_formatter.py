@@ -14,14 +14,12 @@ def array2str(a, remove_str_chars=True):
         s = s.replace("'", "")
     return "[" + s[1:len(s)-1] + "]"
 
-
 def list2enum_str(ls):
     ls = str(ls)
     ls = ls.replace("'", "")
     ls = ls.replace("[", "{")
     ls = ls.replace("]", "}")
     return ls
-
 
 def array2array2d(a):
     np.set_printoptions(threshold=sys.maxsize)
@@ -38,8 +36,6 @@ def array2array2d(a):
     return f"array2d(TEAM_NAMES, periods, {s})"
 
 if __name__ == "__main__":
-
     ls = ['Div_1_Team_1', 'Div_1_Team_2', 'Div_1_Team_3', 'Div_2_Team_1', 'Div_2_Team_2', 'Div_2_Team_3']
-
     a = np.array([[0, 0, 0, 0], [1, 0, 0, 0,], [0, 0, 0, 0], [0, 1, 4, 0], [0, 0, 1, 0], [0, 3, 5, 0]])
     print(array2array2d(a))

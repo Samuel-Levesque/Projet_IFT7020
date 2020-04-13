@@ -13,7 +13,6 @@ def create_file(path, content):
     f.writelines(content)
     f.close()
 
-
 def export(path, data):    
     dzn = [str(d) + " = " + str(data[d]).replace('\'', '') +  ";\n" for d in data]  
     create_file(path, dzn)

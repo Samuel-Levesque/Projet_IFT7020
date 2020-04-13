@@ -295,7 +295,6 @@ def random_between_two_times(time_start, time_end, rounding_method="floor"):
 
 if __name__ == "__main__":
     import os
-    #os.chdir('/Users/Samuel_Levesque/Documents/GitHub/Projet_IFT7020')
 
     scenarios = [
         {
@@ -308,7 +307,6 @@ if __name__ == "__main__":
             "date_start": datetime.datetime(2020, 3, 25),
             "n_time_restrictions": 3,
             "n_venue_restrictions": 3
-
         },
         {
             "scenario_name": "Impossible toy",
@@ -320,7 +318,6 @@ if __name__ == "__main__":
             "date_start": datetime.datetime(2020, 3, 25),
             "n_time_restrictions": 18,
             "n_venue_restrictions": 9
-
         },
         {
             "scenario_name": "2019 World Selects Invitational",
@@ -354,7 +351,6 @@ if __name__ == "__main__":
             "date_start": datetime.datetime(2020, 3, 25),
             "n_time_restrictions": 10,
             "n_venue_restrictions": 5
-
         },
         {
             "scenario_name": "SAHOF State Championships",
@@ -366,7 +362,6 @@ if __name__ == "__main__":
             "date_start": datetime.datetime(2020, 3, 25),
             "n_time_restrictions": 10,
             "n_venue_restrictions": 4
-
         },
         {
             "scenario_name": "The 2020 Kennedy Memorial",
@@ -378,7 +373,6 @@ if __name__ == "__main__":
             "date_start": datetime.datetime(2020, 3, 25),
             "n_time_restrictions": 30,
             "n_venue_restrictions": 10
-
         }
     ]
 
