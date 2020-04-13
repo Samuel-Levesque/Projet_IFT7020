@@ -1,0 +1,54 @@
+Schedule: 
+0 0 0 0 3 0 0 0 0 0
+0 0 2 0 0 0 4 0 0 0
+1 0 0 0 0 0 8 0 9 0
+10 0 7 0 5 0 0 0 6 0
+1010101000
+1010100010
+0010101010
+1000101010
+1010001010
+----------
+Schedule: 
+0 0 0 0 6 0 0 5 0 0
+1 0 2 0 4 0 10 0 0 0
+8 0 0 0 0 0 0 0 0 0
+0 0 7 0 0 0 0 0 3 9
+1010100010
+1010100100
+1010000101
+1000101010
+0010101001
+----------
+Schedule: 
+6 0 0 0 2 0 0 0 0 0
+0 0 0 0 0 0 5 0 0 0
+0 0 0 0 0 0 0 0 0 0
+9 0 3 7 0 10 0 4 8 1
+0010100101
+1001001001
+1000101010
+1010010010
+1001010100
+----------
+==========
+%%%mzn-stat: nodes=16132
+%%%mzn-stat: failures=9891
+%%%mzn-stat: restarts=37
+%%%mzn-stat: variables=5865
+%%%mzn-stat: intVars=457
+%%%mzn-stat: boolVariables=5406
+%%%mzn-stat: propagators=376
+%%%mzn-stat: propagations=802905
+%%%mzn-stat: peakDepth=112
+%%%mzn-stat: nogoods=9891
+%%%mzn-stat: backjumps=5280
+%%%mzn-stat: peakMem=0.00
+%%%mzn-stat: time=0.825
+%%%mzn-stat: initTime=0.034
+%%%mzn-stat: solveTime=0.791
+%%%mzn-stat: objective=0
+%%%mzn-stat: optTime=0.791
+%%%mzn-stat: baseMem=0.00
+%%%mzn-stat: trailMem=0.02
+%%%mzn-stat: randomSeed=1586786823

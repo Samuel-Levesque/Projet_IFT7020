@@ -1,0 +1,149 @@
+NB_PERIODS = 60;
+NB_VENUES = 4;
+NB_GAMES = 60;
+NB_TEAMS = 30;
+NB_DIVISIONS = 6;
+NB_TEAMS_PER_DIVISION = [5, 5, 5, 5, 5, 5];
+VENUE_AVAILABILITIES = [|false, true,false,false, true,false, true, true,false,false, true,false,
+   true, true,false, true, true,false,false, true,false, true, true, true,
+   true, true,false, true,false,false, true, true,false,false,false, true,
+   true,false, true, true,false,false,false, true,false, true, true,false,
+  false, true,false, true, true,false, true,false,false,false, true, true
+ |false,false, true,false, true, true,false, true, true, true,false,false,
+   true, true, true,false, true,false, true, true, true,false, true,false,
+  false,false, true,false, true, true,false, true,false,false, true,false,
+   true, true,false,false,false, true,false, true,false,false, true,false,
+   true, true,false, true, true, true, true,false,false, true,false, true
+ |false,false, true, true, true, true,false,false, true, true, true, true,
+  false,false, true, true,false,false,false,false, true,false,false, true,
+  false, true,false, true,false,false,false, true, true,false, true,false,
+  false, true,false, true,false, true,false, true, true,false, true, true,
+   true,false,false, true,false,false,false, true, true,false,false,false
+ | true, true, true,false, true,false, true,false, true,false,false, true,
+  false,false, true,false,false,false,false,false, true, true, true, true,
+   true,false,false,false, true, true, true,false,false, true,false, true,
+  false, true,false,false,false,false, true, true,false,false, true, true,
+   true,false, true, true, true, true, true, true,false, true,false,false|];
+GAMES_TO_SCHEDULE = [|div_1_team_1,div_1_team_2
+ |div_1_team_1,div_1_team_3
+ |div_1_team_1,div_1_team_4
+ |div_1_team_1,div_1_team_5
+ |div_1_team_2,div_1_team_3
+ |div_1_team_2,div_1_team_4
+ |div_1_team_2,div_1_team_5
+ |div_1_team_3,div_1_team_4
+ |div_1_team_3,div_1_team_5
+ |div_1_team_4,div_1_team_5
+ |div_2_team_1,div_2_team_2
+ |div_2_team_1,div_2_team_3
+ |div_2_team_1,div_2_team_4
+ |div_2_team_1,div_2_team_5
+ |div_2_team_2,div_2_team_3
+ |div_2_team_2,div_2_team_4
+ |div_2_team_2,div_2_team_5
+ |div_2_team_3,div_2_team_4
+ |div_2_team_3,div_2_team_5
+ |div_2_team_4,div_2_team_5
+ |div_3_team_1,div_3_team_2
+ |div_3_team_1,div_3_team_3
+ |div_3_team_1,div_3_team_4
+ |div_3_team_1,div_3_team_5
+ |div_3_team_2,div_3_team_3
+ |div_3_team_2,div_3_team_4
+ |div_3_team_2,div_3_team_5
+ |div_3_team_3,div_3_team_4
+ |div_3_team_3,div_3_team_5
+ |div_3_team_4,div_3_team_5
+ |div_4_team_1,div_4_team_2
+ |div_4_team_1,div_4_team_3
+ |div_4_team_1,div_4_team_4
+ |div_4_team_1,div_4_team_5
+ |div_4_team_2,div_4_team_3
+ |div_4_team_2,div_4_team_4
+ |div_4_team_2,div_4_team_5
+ |div_4_team_3,div_4_team_4
+ |div_4_team_3,div_4_team_5
+ |div_4_team_4,div_4_team_5
+ |div_5_team_1,div_5_team_2
+ |div_5_team_1,div_5_team_3
+ |div_5_team_1,div_5_team_4
+ |div_5_team_1,div_5_team_5
+ |div_5_team_2,div_5_team_3
+ |div_5_team_2,div_5_team_4
+ |div_5_team_2,div_5_team_5
+ |div_5_team_3,div_5_team_4
+ |div_5_team_3,div_5_team_5
+ |div_5_team_4,div_5_team_5
+ |div_6_team_1,div_6_team_2
+ |div_6_team_1,div_6_team_3
+ |div_6_team_1,div_6_team_4
+ |div_6_team_1,div_6_team_5
+ |div_6_team_2,div_6_team_3
+ |div_6_team_2,div_6_team_4
+ |div_6_team_2,div_6_team_5
+ |div_6_team_3,div_6_team_4
+ |div_6_team_3,div_6_team_5
+ |div_6_team_4,div_6_team_5|];
+TEAM_NAMES = {div_1_team_1, div_1_team_2, div_1_team_3, div_1_team_4, div_1_team_5, div_2_team_1, div_2_team_2, div_2_team_3, div_2_team_4, div_2_team_5, div_3_team_1, div_3_team_2, div_3_team_3, div_3_team_4, div_3_team_5, div_4_team_1, div_4_team_2, div_4_team_3, div_4_team_4, div_4_team_5, div_5_team_1, div_5_team_2, div_5_team_3, div_5_team_4, div_5_team_5, div_6_team_1, div_6_team_2, div_6_team_3, div_6_team_4, div_6_team_5};
+TEAMS_TIME_PREFERENCES = array2d(TEAM_NAMES, periods, [0,0,0,0,0,0,0,0,0,0,1,2,4,0,0,0,2,0,2,0,0,0,0,0,0,0,0,0,4,1,0,0,0,0,0,0
+,0,0,0,3,0,0,0,0,3,0,0,0,0,0,4,0,0,5,0,2,0,0,0,0,
+0,0,0,4,0,0,4,0,0,2,3,4,0,0,0,0,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,5,0,4
+,0,0,0,3,0,3,0,1,0,0,0,0,0,0,0,0,0,2,0,5,0,5,0,0,
+0,0,0,0,0,1,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,3
+,5,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,4,0,3,
+0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,5,0,0,0,4,0,0,0,0,0,0,0,0,1,0,0,0,0,4
+,0,0,0,0,0,2,4,0,0,0,3,0,0,0,0,0,0,0,0,0,1,5,0,0,
+0,5,0,0,0,0,0,0,0,3,0,4,0,0,0,0,0,4,0,0,1,0,0,1,5,0,0,1,0,0,0,4,0,0,0,5
+,0,0,0,0,3,4,0,0,0,0,5,0,0,2,3,3,0,0,0,4,4,0,0,0,
+5,0,0,0,0,0,1,0,5,0,0,4,0,0,0,0,0,3,1,0,0,0,0,0,1,0,0,0,0,0,0,3,0,0,3,0
+,0,0,0,0,0,0,3,0,0,0,1,0,3,0,0,1,0,4,0,0,0,5,0,0,
+0,4,0,0,0,0,0,0,4,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,0,4,2,0,1
+,0,4,0,4,4,3,0,1,0,0,1,0,0,3,0,0,0,3,0,0,0,0,0,4,
+0,0,0,1,0,0,2,0,0,0,2,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,2,4,0,0,0,0,0,0,1
+,0,3,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,4,4,3,4,0,
+0,4,0,1,0,0,0,0,0,2,0,0,0,0,0,0,2,0,2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,1,0,
+0,3,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,5,0,0,0,0,5,0,0,0,0,3,0,0,2,2,0,0,0
+,0,0,0,0,0,0,0,5,4,0,2,0,3,0,5,0,3,1,0,0,0,0,0,0,
+5,0,0,0,5,0,0,5,0,0,0,5,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0
+,4,0,0,0,0,1,3,0,0,0,0,0,0,3,1,0,1,0,0,5,0,0,0,0,
+1,2,0,0,3,0,0,0,3,0,0,0,0,0,0,4,0,0,0,0,0,0,0,5,0,0,0,0,0,1,0,0,0,0,0,3
+,0,0,0,0,0,0,0,0,0,0,2,0,0,2,2,0,0,0,0,0,1,0,0,0,
+0,0,0,0,0,4,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,2,1,0
+,0,0,0,0,0,0,1,0,0,2,0,0,0,3,4,0,0,0,5,0,2,0,0,0,
+4,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,2,2,0,0,0,0,0,0,0,0,0,4,0
+,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,
+0,0,0,0,3,0,0,0,0,0,0,0,0,0,3,0,0,4,1,0,0,0,0,0,3,0,0,0,4,0,0,3,0,0,0,2
+,0,0,0,0,5,0,0,0,0,0,0,0,0,0,3,4,0,0,0,0,5,4,0,0,
+3,0,0,0,0,0,0,0,1,0,5,0,0,0,4,0,0,5,0,0,0,0,0,3,0,3,0,0,0,0,0,0,1,0,0,2
+,0,2,0,0,0,0,0,0,0,0,0,0,2,0,0,2,0,5,0,0,0,0,0,0,
+0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+,0,0,0,2,1,0,0,0,0,0,0,1,0,0,5,0,0,1,1,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1,0,4,0,0,0,4,0,3,0,4,3,0,0,0,0,0,0,0,0,0,1,0,2,0,4,0,0
+,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,3,0,0,0,
+0,0,0,0,0,0,0,0,1,0,0,0,4,0,0,4,0,1,0,0,0,0,0,0,0,0,3,0,0,0,3,0,2,0,0,0
+,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+3,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0
+,0,0,4,0,0,0,0,0,0,4,0,0,5,0,0,0,0,0,0,0,3,0,0,0,
+2,0,0,0,4,0,0,0,0,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,3,2
+,0,0,0,5,0,0,2,2,0,0,1,0,0,3,0,0,0,0,0,0,0,0,0,0,
+3,0,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3,0,0,0,2,0,0,0,0,3,1,0,0,0,0,0,0,0
+,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,2,1,5,1,5,0,0,0,0,
+0,0,1,0,0,0,0,0,0,0,0,0,2,0,3,0,5,2,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0
+,0,0,2,4,0,0,0,5,0,0,0,0,0,4,0,0,0,0,0,5,0,0,0,0,
+5,0,0,0,1,4,0,0,0,2,4,5,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0
+,0,0,0,0,0,0,0,0,4,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
+5,0,0,0,0,0,0,1,0,0,4,4,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,4,0,0,1,0,0
+,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,2,5,
+4,5,0,0,0,0,2,0,0,2,0,0,0,4,0,1,5,0,0,0,0,0,2,0,0,0,0,1,0,0,0,0,0,0,0,0
+,4,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,4,0,0,0,
+0,0,0,0,4,4,0,5,0,0,0,0,0,0,0,0,3,4,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,2,0
+,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,3,0,
+5,0,0,0,0,0,0,0,3,0,0,0,5,0,1,0,0,0,2,4,0,0,0,0,3,0,0,0,0,0,0,0,0,0,2,0
+,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+0,0,0,1,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,5,0,0,2,0,0,3,1,0,0,0,0,0,0
+,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,2,2,0,0,4,0,4,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,4,0,5
+,0,0,0,0,0,0,0,1,2,0,3,0,0,0,0,0,0,0,0,0,4,0,0,0]);
+COACH_NAMES = {Coach_1, Coach_2, Coach_3, Coach_4, Coach_5, Coach_6, Coach_7, Coach_8, Coach_9, Coach_10, Coach_11, Coach_12, Coach_13, Coach_14, Coach_15, Coach_16, Coach_17, Coach_18, Coach_19, Coach_20, Coach_21, Coach_22, Coach_23, Coach_24, Coach_25, Coach_26, Coach_27, Coach_28, Coach_29, Coach_30};
+COACHES_BY_TEAM = array1d(TEAM_NAMES, [Coach_1, Coach_2, Coach_3, Coach_4, Coach_5, Coach_6, Coach_7, Coach_8, Coach_9, Coach_10, Coach_11, Coach_12, Coach_13, Coach_14, Coach_15, Coach_16, Coach_17, Coach_18, Coach_19, Coach_20, Coach_21, Coach_22, Coach_23, Coach_24, Coach_25, Coach_26, Coach_27, Coach_28, Coach_29, Coach_30]);

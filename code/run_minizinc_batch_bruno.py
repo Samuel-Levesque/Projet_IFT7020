@@ -129,5 +129,5 @@ def run_models(id, models, scenario):
 
 if __name__ == "__main__":
     
-    #run_all_models("bruno")
-    run_models("breaks", "../models/breaks", "../code/test_bruno/scenario_t50-p100-d10-v4-c50.dzn")
+    run_all_models("bruno_3")
+    #run_models("breaks", "../models/breaks", "../code/test_bruno/scenario_t50-p100-d10-v4-c50.dzn")
