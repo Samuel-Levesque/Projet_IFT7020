@@ -138,4 +138,4 @@ if __name__ == "__main__":
     #run_all_models("4")
     #run_models("test", "models/auto.mzn", "test.dzn")
     #run_model_scenario(5, "../models/model_sums_sat.mzn", "test_test_4/scenario_t50-p100-d10-v4-c50.dzn")
-    run_coaches(4, 50)
+    run_coaches(5, 50)
