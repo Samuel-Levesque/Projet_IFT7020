@@ -1,5 +1,5 @@
 include "globals.mzn"; 
-% include "toy.dzn";
+%include "scenario_t50-p100-d10-v4-c50.dzn";
 
 int: NB_PERIODS;
 int: NB_VENUES;
