@@ -107,4 +107,6 @@ output
 ++
 [
   join("", [show(sum(team_playing[t, venues, p])) | p in periods]) ++ "\n" | t in TEAM_NAMES
-];
+]
+++
+[show(preferences_cost)];
